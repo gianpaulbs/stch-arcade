@@ -12,48 +12,123 @@ namespace stcharcade {
 	/// <summary>
 	/// Resumen de Background
 	/// </summary>
-	public ref class Background : public System::Windows::Forms::Form
+	public ref class FrmBackground : public System::Windows::Forms::Form
 	{
-	public:
-		Background(void)
-		{
-			InitializeComponent();
-			//
-			//TODO: agregar código de constructor aquí
-			//
-		}
-
-	protected:
-		/// <summary>
-		/// Limpiar los recursos que se estén usando.
-		/// </summary>
-		~Background()
-		{
-			if (components)
+		public:
+			FrmBackground(void)
 			{
-				delete components;
+				InitializeComponent();
+
+				/* Inicializamos las variables gráficas
+				 * que nos permitirá crear gráficos donde
+				 * le asignemos.
+				*/
+				gInfo = PnlInfo->CreateGraphics();
+				gGame = PnlGame->CreateGraphics();
+
+				/* Creamos un espacio que nos proporciona métodos para poder
+				 * configurar nuestro bufer gráfico. Con el método allocate creo
+				 * un contenedor bufer de gráficos con las dimensiones de nuestros paneles
+				*/
+				bfSpace = BufferedGraphicsManager::Current;
+				bfInfo = bfSpace->Allocate(gInfo, PnlInfo->ClientRectangle);
+				bfGame = bfSpace->Allocate(gGame, PnlGame->ClientRectangle);
+
+				/* Inicializamos los mapas de bits con las rutas de la imagen */
+				bmpInfo = gcnew Bitmap("resources/images/info.jpg");
+				bmpMap = gcnew Bitmap("resources/images/background.png");
 			}
-		}
 
-	private:
-		/// <summary>
-		/// Variable del diseñador necesaria.
-		/// </summary>
-		System::ComponentModel::Container ^components;
+		protected:
+			/// <summary>
+			/// Limpiar los recursos que se estén usando.
+			/// </summary>
+			~FrmBackground()
+			{
+				if (components)
+				{
+					delete components;
+				}
+			}
 
-#pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Método necesario para admitir el Diseñador. No se puede modificar
-		/// el contenido de este método con el editor de código.
-		/// </summary>
-		void InitializeComponent(void)
-		{
-			this->components = gcnew System::ComponentModel::Container();
-			this->Size = System::Drawing::Size(300,300);
-			this->Text = L"Background";
-			this->Padding = System::Windows::Forms::Padding(0);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-		}
-#pragma endregion
-	};
+		private: System::Windows::Forms::Panel^ PnlInfo;
+		private: System::Windows::Forms::Panel^ PnlGame;
+		private: System::Windows::Forms::Timer^ Loop;
+		private: System::ComponentModel::IContainer^ components;
+		private:
+			Graphics^ gInfo;
+			Graphics^ gGame;
+			BufferedGraphicsContext^ bfSpace;
+			BufferedGraphics^ bfInfo;
+			BufferedGraphics^ bfGame;
+
+			Bitmap^ bmpInfo;
+			Bitmap^ bmpMap;
+
+		protected:
+		protected:
+
+		private:
+			/// <summary>
+			/// Variable del diseñador necesaria.
+			/// </summary>
+
+
+			#pragma region Windows Form Designer generated code
+			/// <summary>
+			/// Método necesario para admitir el Diseñador. No se puede modificar
+			/// el contenido de este método con el editor de código.
+			/// </summary>
+			void InitializeComponent(void)
+			{
+				this->components = (gcnew System::ComponentModel::Container());
+				this->PnlInfo = (gcnew System::Windows::Forms::Panel());
+				this->PnlGame = (gcnew System::Windows::Forms::Panel());
+				this->Loop = (gcnew System::Windows::Forms::Timer(this->components));
+				this->SuspendLayout();
+				// 
+				// PnlInfo
+				// 
+				this->PnlInfo->Location = System::Drawing::Point(0, 0);
+				this->PnlInfo->Name = L"PnlInfo";
+				this->PnlInfo->Size = System::Drawing::Size(1280, 125);
+				this->PnlInfo->TabIndex = 0;
+				// 
+				// PnlGame
+				// 
+				this->PnlGame->Location = System::Drawing::Point(0, 125);
+				this->PnlGame->Name = L"PnlGame";
+				this->PnlGame->Size = System::Drawing::Size(1280, 595);
+				this->PnlGame->TabIndex = 1;
+				// 
+				// Loop
+				// 
+				this->Loop->Enabled = true;
+				this->Loop->Tick += gcnew System::EventHandler(this, &FrmBackground::Loop_Tick);
+				// 
+				// FrmBackground
+				// 
+				this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+				this->ClientSize = System::Drawing::Size(1280, 720);
+				this->Controls->Add(this->PnlGame);
+				this->Controls->Add(this->PnlInfo);
+				this->Name = L"FrmBackground";
+				this->Text = L"Background";
+				this->ResumeLayout(false);
+
+			}
+			#pragma endregion
+
+			private: System::Void Loop_Tick(System::Object^ sender, System::EventArgs^ e) {
+				bfInfo->Graphics->Clear(Color::White);
+				bfInfo->Graphics->DrawImage(bmpInfo, 0, 0, 1281, 125);
+				
+				bfGame->Graphics->Clear(Color::White);
+				bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
+
+				bfInfo->Render(gInfo);
+				bfGame->Render(gGame);
+			}
+};
 }
