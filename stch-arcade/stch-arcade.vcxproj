@@ -124,6 +124,8 @@
     <ClCompile Include="FrmMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aliado.h" />
+    <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Entidad.h" />
     <ClInclude Include="FrmBackground.h">
       <FileType>CppForm</FileType>
@@ -131,6 +133,9 @@
     <ClInclude Include="FrmMenu.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Controlador.h" />
+    <ClInclude Include="Jugador.h" />
+    <ClInclude Include="Poblador.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FrmBackground.resx">

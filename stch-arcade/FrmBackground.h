@@ -1,4 +1,5 @@
 #pragma once
+#include "Controlador.h"
 
 namespace stcharcade {
 
@@ -37,6 +38,9 @@ namespace stcharcade {
 				/* Inicializamos los mapas de bits con las rutas de la imagen */
 				bmpInfo = gcnew Bitmap("resources/images/info.jpg");
 				bmpMap = gcnew Bitmap("resources/images/background.png");
+
+				/* Cargamos el controlador del juego */
+				controlador = gcnew ControladorJuego();
 			}
 
 		protected:
@@ -64,6 +68,8 @@ namespace stcharcade {
 
 			Bitmap^ bmpInfo;
 			Bitmap^ bmpMap;
+
+			ControladorJuego^ controlador;
 
 		protected:
 		protected:
@@ -104,6 +110,7 @@ namespace stcharcade {
 				// Loop
 				// 
 				this->Loop->Enabled = true;
+				this->Loop->Interval = 33;
 				this->Loop->Tick += gcnew System::EventHandler(this, &FrmBackground::Loop_Tick);
 				// 
 				// FrmBackground
@@ -115,11 +122,14 @@ namespace stcharcade {
 				this->Controls->Add(this->PnlInfo);
 				this->Name = L"FrmBackground";
 				this->Text = L"Background";
+				this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyDown);
+				this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyUp);
 				this->ResumeLayout(false);
 
 			}
 			#pragma endregion
 
+			#pragma region Events
 			private: System::Void Loop_Tick(System::Object^ sender, System::EventArgs^ e) {
 				bfInfo->Graphics->Clear(Color::White);
 				bfInfo->Graphics->DrawImage(bmpInfo, 0, 0, 1281, 125);
@@ -127,8 +137,29 @@ namespace stcharcade {
 				bfGame->Graphics->Clear(Color::White);
 				bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
 
+				controlador->Mostrar(bfGame->Graphics);
 				bfInfo->Render(gInfo);
 				bfGame->Render(gGame);
+
+				if (!controlador->Mover(gGame)) {
+					this->Loop->Enabled = false;
+
+					if (controlador->GetResultado()) 
+						MessageBox::Show("GANASTE");
+					else 
+						MessageBox::Show("PERDISTE");
+
+					this->Close();
+				}
 			}
-};
+
+			private: System::Void FrmBackground_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+				controlador->MovimientoJugador(true, e->KeyCode);
+			}
+
+			private: System::Void FrmBackground_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+				controlador->MovimientoJugador(false, e->KeyCode);
+			}
+			#pragma endregion
+	};
 }
