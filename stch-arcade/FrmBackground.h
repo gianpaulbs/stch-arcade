@@ -36,7 +36,7 @@ namespace stcharcade {
 				bfGame = bfSpace->Allocate(gGame, PnlGame->ClientRectangle);
 
 				/* Inicializamos los mapas de bits con las rutas de la imagen */
-				bmpInfo = gcnew Bitmap("resources/images/tablero.png");
+				bmpInfo = gcnew Bitmap("resources/images/tablero.jpg");
 				bmpMap = gcnew Bitmap("resources/images/background.png");
 
 				/* Cargamos el controlador del juego */
@@ -132,7 +132,7 @@ namespace stcharcade {
 			#pragma region Events
 			private: System::Void Loop_Tick(System::Object^ sender, System::EventArgs^ e) {
 				bfInfo->Graphics->Clear(Color::White);
-				bfInfo->Graphics->DrawImage(bmpInfo, 0, 0, 1281, 125);
+				bfInfo->Graphics->DrawImage(bmpInfo, 0, 0, 1280, 125);
 				
 				bfGame->Graphics->Clear(Color::White);
 				bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
