@@ -75,7 +75,6 @@ class Jugador : public Entidad
 			g->DrawRectangle(Pens::Black, Area());
 			g->DrawRectangle(Pens::Blue, HitBox());
 
-
 			if (accion >= CaminarAbajo && accion <= CaminarArriba && (dx != 0 || dy != 0))
 				IDx = (IDx + 1) % 4;
 			else if (accion == Morir)

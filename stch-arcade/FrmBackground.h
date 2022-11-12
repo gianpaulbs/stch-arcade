@@ -36,7 +36,7 @@ namespace stcharcade {
 				bfGame = bfSpace->Allocate(gGame, PnlGame->ClientRectangle);
 
 				/* Inicializamos los mapas de bits con las rutas de la imagen */
-				bmpInfo = gcnew Bitmap("resources/images/info.jpg");
+				bmpInfo = gcnew Bitmap("resources/images/tablero.png");
 				bmpMap = gcnew Bitmap("resources/images/background.png");
 
 				/* Cargamos el controlador del juego */
@@ -155,6 +155,10 @@ namespace stcharcade {
 
 			private: System::Void FrmBackground_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 				controlador->MovimientoJugador(true, e->KeyCode);
+
+				if (e->KeyCode == Keys::Enter) {
+					controlador->Habilitar_Aliados();
+				}
 			}
 
 			private: System::Void FrmBackground_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {

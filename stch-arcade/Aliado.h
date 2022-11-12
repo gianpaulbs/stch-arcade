@@ -18,6 +18,7 @@ class Aliado : public Entidad
 		int vidas;
 		int puntos;
 		int ID;
+		bool visible;
 		SpriteAliado accion;
 
 	public:
@@ -33,10 +34,13 @@ class Aliado : public Entidad
 			ID = id;
 			if (ID == 1) dx = dy = 2;
 			else 		 dx = dy = 0;
+
+			visible = false;
 		}
 
 		void SetVidas(int value) { vidas += value; }
 		void SetPuntos(int value) { puntos += value; }
+		void SetVisible(bool value) { visible = value; }
 		void SetAccion(SpriteAliado value) {
 			if (accion != value)
 				IDx = 0;
@@ -46,9 +50,12 @@ class Aliado : public Entidad
 		int GetID() { return ID; }
 		int GetVidas() { return vidas; }
 		int GetPuntos() { return puntos; }
+		bool GetVisible() { return visible; }
 		SpriteAliado GetAccion() { return accion; }
 
 		void Mover(Graphics^ g, Poblador* poblador) {
+			if (!visible) return;
+
 			if (ID == 2) {
 				if (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)
 					x += dx;
@@ -80,6 +87,8 @@ class Aliado : public Entidad
 		}
 
 		void Mostrar(Graphics^ g, Bitmap^ img) {
+			if (!visible) return;
+
 			Rectangle corte = Rectangle(IDx * ancho, accion * alto, ancho, alto);
 			g->DrawImage(img, Area(), corte, GraphicsUnit::Pixel);
 			g->DrawRectangle(Pens::Black, Area());

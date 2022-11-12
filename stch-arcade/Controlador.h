@@ -162,7 +162,16 @@ ref class ControladorJuego {
 			g->DrawString("Tiempo: " + ((tiempo - clock()) / 1000), gcnew Font("Arial", 12), Brushes::Black, 0, 20);
 			pobladores->Mostrar(g, imgPoblador);
 			jugador->Mostrar(g, imgJugador);
+			
 			aliadoManual->Mostrar(g, imgAliado);
 			aliadoAutomatico->Mostrar(g, imgAliado);
+		}
+
+		void Habilitar_Aliados() {
+			if (!aliadoManual->GetVisible())
+				aliadoManual->SetVisible(true);
+
+			else if (!aliadoAutomatico->GetVisible())
+				aliadoAutomatico->SetVisible(true);
 		}
 };
