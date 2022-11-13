@@ -22,8 +22,8 @@ class Poblador : public Entidad
 		Poblador(Bitmap^ img) {
 			movido = false;
 			tiempo = clock() + 10 * 1000;
-			x = rand() % 800;
-			y = rand() % 350;
+			x = rand() % 1200;
+			y = rand() % 700;
 
 			if (rand() % 2 == 0)
 			{

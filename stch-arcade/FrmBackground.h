@@ -19,6 +19,7 @@ namespace stcharcade {
 			FrmBackground(void)
 			{
 				InitializeComponent();
+				srand(time(NULL));
 
 				/* Inicializamos las variables gráficas
 				 * que nos permitirá crear gráficos donde
@@ -137,7 +138,7 @@ namespace stcharcade {
 				bfGame->Graphics->Clear(Color::White);
 				bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
 
-				controlador->Mostrar(bfGame->Graphics);
+				controlador->Mostrar(bfGame->Graphics, bfInfo->Graphics);
 				bfInfo->Render(gInfo);
 				bfGame->Render(gGame);
 

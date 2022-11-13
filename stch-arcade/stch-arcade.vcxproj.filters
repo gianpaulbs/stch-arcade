@@ -47,5 +47,8 @@
     <ClInclude Include="Poblador.h">
       <Filter>Archivos de encabezado\Clases</Filter>
     </ClInclude>
+    <ClInclude Include="Info.h">
+      <Filter>Archivos de encabezado\Clases</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

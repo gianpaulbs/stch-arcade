@@ -134,6 +134,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Controlador.h" />
+    <ClInclude Include="Info.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="Poblador.h" />
   </ItemGroup>

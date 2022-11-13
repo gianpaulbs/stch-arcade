@@ -1,4 +1,5 @@
 #pragma once
+#include "Info.h"
 #include "Jugador.h"
 #include "Poblador.h"
 #include "Aliado.h"
@@ -11,6 +12,8 @@ ref class ControladorJuego {
 		Pobladores* pobladores;
 		Aliado* aliadoManual;
 		Aliado* aliadoAutomatico;
+		Info^ info;
+
 		Bitmap^ imgTrol;
 		Bitmap^ imgJugador;
 		Bitmap^ imgPoblador;
@@ -23,8 +26,7 @@ ref class ControladorJuego {
 		int objetivo;
 
 	public:
-		ControladorJuego()
-		{
+		ControladorJuego() {
 			imgJugador = gcnew Bitmap("resources/images/bruno.png");
 			imgPoblador = gcnew Bitmap("resources/images/rojo.png");
 			imgAliado = gcnew Bitmap("resources/images/zombies1.png");
@@ -38,6 +40,8 @@ ref class ControladorJuego {
 			cooldownAtaqueEnemigo = 0;
 			objetivo = 5 + 3;
 			tiempo = 90 * 1000 + clock();
+
+			info = gcnew Info();
 		}
 
 		~ControladorJuego() {
@@ -157,14 +161,20 @@ ref class ControladorJuego {
 			return true;
 		}
 
-		void Mostrar(Graphics^ g)
+		void Mostrar(Graphics^ g, Graphics^ i)
 		{
-			g->DrawString("Tiempo: " + ((tiempo - clock()) / 1000), gcnew Font("Arial", 12), Brushes::Black, 0, 20);
+			int t = (tiempo - clock()) / 1000;
+			//g->DrawString("Tiempo: " + t, gcnew Font("Arial", 12), Brushes::Black, 0, 20);
+			
+			/* Personajes */
 			pobladores->Mostrar(g, imgPoblador);
 			jugador->Mostrar(g, imgJugador);
 			
 			aliadoManual->Mostrar(g, imgAliado);
 			aliadoAutomatico->Mostrar(g, imgAliado);
+
+			/* Información */
+			info->Mostrar(i, t, jugador->GetPuntos(), aliadoManual->GetVisible(), aliadoAutomatico->GetVisible());
 		}
 
 		void Habilitar_Aliados() {
