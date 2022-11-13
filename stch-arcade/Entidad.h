@@ -23,6 +23,8 @@ class Entidad
 
 		void SetDX(int value) { dx = value; }
 		void SetDY(int value) { dy = value; }
+		void SetX(int value) { x = value; }
+		void SetY(int value) { y = value; }
 
 		int GetX() { return x; }
 		int GetY() { return y; }

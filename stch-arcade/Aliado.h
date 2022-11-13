@@ -28,7 +28,7 @@ class Aliado : public Entidad
 			ancho = img->Width / 3;
 			alto = img->Height / 4;
 
-			accion = aCaminarArriba;
+			accion = aCaminarAbajo;
 
 			puntos = 0;
 			ID = id;

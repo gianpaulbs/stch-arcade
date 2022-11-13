@@ -8,6 +8,12 @@ enum SpriteJugador
 	CaminarDerecha,
 	CaminarArriba,
 
+	//DefensaPropia
+	AtacarAbajo,
+	AtacarIzquierda,
+	AtacarDerecha,
+	AtacarArriba,
+
 	Morir
 };
 

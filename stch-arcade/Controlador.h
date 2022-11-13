@@ -3,6 +3,7 @@
 #include "Jugador.h"
 #include "Poblador.h"
 #include "Aliado.h"
+#include "Enemigo.h"
 
 using namespace System::Windows::Forms;
 
@@ -12,31 +13,37 @@ ref class ControladorJuego {
 		Pobladores* pobladores;
 		Aliado* aliadoManual;
 		Aliado* aliadoAutomatico;
+		Enemigo* enemigoHeroe;
 		Info^ info;
 
-		Bitmap^ imgTrol;
+		Bitmap^ imgEnemigo;
 		Bitmap^ imgJugador;
 		Bitmap^ imgPoblador;
 		Bitmap^ imgAliado;
 
 		int pobladorAsaciar;
+		int cooldownCobardia;
 		int cooldownAtaqueEnemigo;
 		int tiempo;
 		bool resultado;
 		int objetivo;
+		int seg;
 
 	public:
 		ControladorJuego() {
 			imgJugador = gcnew Bitmap("resources/images/bruno.png");
 			imgPoblador = gcnew Bitmap("resources/images/rojo.png");
 			imgAliado = gcnew Bitmap("resources/images/zombies1.png");
-
+			imgEnemigo = gcnew Bitmap("resources/images/proton.png");
+	
 			jugador = new Jugador(imgJugador);
 			pobladores = new Pobladores(imgPoblador, 30);
 			aliadoAutomatico = new Aliado(imgAliado, 1);
 			aliadoManual = new Aliado(imgAliado, 2);
+			enemigoHeroe = new Enemigo(imgEnemigo);
 			pobladorAsaciar = 0;
 
+			cooldownCobardia = 0;
 			cooldownAtaqueEnemigo = 0;
 			objetivo = 5 + 3;
 			tiempo = 90 * 1000 + clock();
@@ -45,7 +52,7 @@ ref class ControladorJuego {
 		}
 
 		~ControladorJuego() {
-			delete jugador, pobladores, aliadoManual, aliadoAutomatico;
+			delete jugador, pobladores, aliadoManual, aliadoAutomatico, enemigoHeroe;
 		}
 
 		bool GetResultado() {
@@ -77,7 +84,17 @@ ref class ControladorJuego {
 					jugador->SetDX(v);
 					jugador->SetAccion(CaminarDerecha);
 				}
-
+				else if (tecla == Keys::Q)
+				{
+					if (jugador->GetAccion() == CaminarArriba)
+						jugador->SetAccion(AtacarArriba);
+					else if (jugador->GetAccion() == CaminarAbajo)
+						jugador->SetAccion(AtacarAbajo);
+					else if (jugador->GetAccion() == CaminarIzquierda)
+						jugador->SetAccion(AtacarIzquierda);
+					else if (jugador->GetAccion() == CaminarDerecha)
+						jugador->SetAccion(AtacarDerecha);
+				}
 			}
 			else
 			{
@@ -131,16 +148,10 @@ ref class ControladorJuego {
 
 		bool Mover(Graphics^ g)
 		{
-			/*if (enemigos->Colision(jugador->HitBox()) && clock() - cooldownAtaqueEnemigo >= 2000)
+			if (jugador->GetAccion() >= AtacarAbajo && jugador->GetAccion() <= AtacarArriba)
 			{
-				jugador->SetVidas(-1);
-				cooldownAtaqueEnemigo = clock();
-
-				if (jugador->GetVidas() == 0)
-				{
-					jugador->SetAccion(Morir);
-				}
-			}*/
+				if(enemigoHeroe->Colision(jugador->HitBox()))enemigoHeroe->SetAvergonzado(true);
+			}
 
 			if (clock() >= tiempo) {
 				jugador->SetAccion(Morir);
@@ -157,21 +168,36 @@ ref class ControladorJuego {
 			pobladores->Mover(g);
 			aliadoManual->Mover(g, pobladores->Get(pobladorAsaciar));
 			aliadoAutomatico->Mover(g, pobladores->Get(pobladorAsaciar));
-
+			enemigoHeroe->Mover(g, jugador);
 			return true;
 		}
 
 		void Mostrar(Graphics^ g, Graphics^ i)
 		{
 			int t = (tiempo - clock()) / 1000;
-			//g->DrawString("Tiempo: " + t, gcnew Font("Arial", 12), Brushes::Black, 0, 20);
+
 			
+			//g->DrawString("Tiempo: " + a, gcnew Font("Arial", 12), Brushes::Black, 0, 90);
+	
 			/* Personajes */
 			pobladores->Mostrar(g, imgPoblador);
 			jugador->Mostrar(g, imgJugador);
 			
 			aliadoManual->Mostrar(g, imgAliado);
 			aliadoAutomatico->Mostrar(g, imgAliado);
+
+			if (enemigoHeroe->GetVisible()) {
+				enemigoHeroe->Mostrar(g, imgEnemigo);
+			}
+			else if (clock() - cooldownCobardia >= 2000) {
+					enemigoHeroe->SetAvergonzado(false);
+					enemigoHeroe->SetX(600);
+					enemigoHeroe->SetY(300);
+					enemigoHeroe->SetVisible(true);
+					cooldownCobardia = clock();
+					enemigoHeroe->Mostrar(g, imgEnemigo);
+			}
+
 
 			/* Información */
 			info->Mostrar(i, t, jugador->GetPuntos(), aliadoManual->GetVisible(), aliadoAutomatico->GetVisible());

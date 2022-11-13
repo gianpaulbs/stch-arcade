@@ -21,7 +21,6 @@ class Poblador : public Entidad
 
 		Poblador(Bitmap^ img) {
 			movido = false;
-			tiempo = clock() + 10 * 1000;
 			x = rand() % 1200;
 			y = rand() % 700;
 
@@ -55,7 +54,7 @@ class Poblador : public Entidad
 		}
 
 		void Mover(Graphics^ g) {
-			if (clock() >= tiempo) {
+			
 				if (!(x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width))
 					dx *= -1;
 				if (!(y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height))
@@ -71,11 +70,7 @@ class Poblador : public Entidad
 					accion = eCaminarAbajo;
 				x += dx;
 				y += dy;
-
-				movido = true;
-				tiempo += 5000;
-			}
-			movido = false;
+		
 		}
 
 		void Mostrar(Graphics^ g, Bitmap^ img) {

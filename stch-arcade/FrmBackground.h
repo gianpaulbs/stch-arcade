@@ -97,16 +97,20 @@ namespace stcharcade {
 				// PnlInfo
 				// 
 				this->PnlInfo->Location = System::Drawing::Point(0, 0);
+				this->PnlInfo->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->PnlInfo->Name = L"PnlInfo";
-				this->PnlInfo->Size = System::Drawing::Size(1280, 125);
+				this->PnlInfo->Size = System::Drawing::Size(1920, 192);
 				this->PnlInfo->TabIndex = 0;
+				this->PnlInfo->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmBackground::PnlInfo_Paint);
 				// 
 				// PnlGame
 				// 
-				this->PnlGame->Location = System::Drawing::Point(0, 125);
+				this->PnlGame->Location = System::Drawing::Point(0, 192);
+				this->PnlGame->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->PnlGame->Name = L"PnlGame";
-				this->PnlGame->Size = System::Drawing::Size(1280, 595);
+				this->PnlGame->Size = System::Drawing::Size(1920, 915);
 				this->PnlGame->TabIndex = 1;
+				this->PnlGame->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmBackground::PnlGame_Paint);
 				// 
 				// Loop
 				// 
@@ -116,11 +120,12 @@ namespace stcharcade {
 				// 
 				// FrmBackground
 				// 
-				this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+				this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				this->ClientSize = System::Drawing::Size(1280, 720);
+				this->ClientSize = System::Drawing::Size(1920, 1050);
 				this->Controls->Add(this->PnlGame);
 				this->Controls->Add(this->PnlInfo);
+				this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->Name = L"FrmBackground";
 				this->Text = L"Background";
 				this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyDown);
@@ -166,5 +171,9 @@ namespace stcharcade {
 				controlador->MovimientoJugador(false, e->KeyCode);
 			}
 			#pragma endregion
-	};
+	private: System::Void PnlGame_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+	}
+private: System::Void PnlInfo_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+}
+};
 }

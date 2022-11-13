@@ -142,6 +142,9 @@
     <EmbeddedResource Include="FrmBackground.resx">
       <DependentUpon>FrmBackground.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmMenu.resx">
+      <DependentUpon>FrmMenu.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
