@@ -2,12 +2,17 @@
 #include "Entidad.h"
 #include "Poblador.h"
 
-enum SpriteAliado
-{
+enum SpriteAliado {
 	aCaminarArriba,
 	aCaminarDerecha,
 	aCaminarAbajo,
 	aCaminarIzquierda,
+
+	//DefensaPropia
+	aAtacarAbajo,
+	aAtacarIzquierda,
+	aAtacarDerecha,
+	aAtacarArriba,
 
 	aMorir
 };

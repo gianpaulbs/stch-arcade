@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Entidad.h"
 
 enum SpriteJugador
