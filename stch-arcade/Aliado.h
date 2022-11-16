@@ -96,12 +96,10 @@ class Aliado : public Entidad
 
 			Rectangle corte = Rectangle(IDx * ancho, accion * alto, ancho, alto);
 			g->DrawImage(img, Area(), corte, GraphicsUnit::Pixel);
-			g->DrawRectangle(Pens::Black, Area());
-			g->DrawRectangle(Pens::Blue, HitBox());
+			//g->DrawRectangle(Pens::Black, Area());
+			//g->DrawRectangle(Pens::Blue, HitBox());
 
 			if (accion >= aCaminarArriba && accion <= aCaminarIzquierda && (dx != 0 || dy != 0))
 				IDx = (IDx + 1) % 3;
-			else if (accion == Morir)
-				IDx = (IDx + 1) % 6;
 		}
 };

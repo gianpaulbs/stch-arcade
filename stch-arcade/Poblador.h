@@ -18,7 +18,7 @@ public:
 	Poblador(Bitmap^ img) {
 		enfermo = false;
 		x = rand() % 1200;
-		y = rand() % 530;
+		y = rand() % 700;
 		
 		if (rand() % 2 == 0) {
 			dx = rand() % 2;
@@ -41,8 +41,15 @@ public:
 	void SetEnfermo(bool value) { enfermo = value; }
 	bool GetEnfermo() { return enfermo; }
 
-	void Mover(Graphics^ g) {
+	void Mover(Graphics^ g, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
 		if (!enfermo) {
+			if (NextArea().IntersectsWith(r1) ||
+				NextArea().IntersectsWith(r2) ||
+				NextArea().IntersectsWith(r3) ||
+				NextArea().IntersectsWith(r4)) {
+				dx *= -1;
+				dy *= -1;
+			}
 			if (!(x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) dx *= -1;
 			if (!(y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) dy *= -1;
 			if (dx < 0) accion = eCaminarIzquierda;
@@ -72,8 +79,20 @@ class Pobladores {
 private:
 	vector<Poblador*> pobladores;
 public:
-	Pobladores(Bitmap^ img, int cant) {
-		for (int i = 0; i < cant; i++) pobladores.push_back(new Poblador(img));
+	Pobladores(Bitmap^ img, int cant, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
+		for (int i = 0; i < cant; i++) {
+			Poblador* poblador = new Poblador(img);
+			if (poblador->Area().IntersectsWith(r1) == false &&
+				poblador->Area().IntersectsWith(r2) == false &&
+				poblador->Area().IntersectsWith(r3) == false &&
+				poblador->Area().IntersectsWith(r4) == false)
+			pobladores.push_back(poblador);
+
+			else {
+				delete poblador;
+				i--;
+			}
+		}
 	}
 
 	~Pobladores() { for each (Poblador * E in pobladores) delete E; }
@@ -90,6 +109,7 @@ public:
 			return false;
 	}
 
-	void Mover(Graphics^ g) { for each (Poblador * E in pobladores) E->Mover(g); }
+	void Mover(Graphics^ g,Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
+		for each (Poblador * E in pobladores) E->Mover(g,r1,r2,r3,r4); }
 	void Mostrar(Graphics^ g, Bitmap^ img) { for each (Poblador * E in pobladores) E->Mostrar(g, img); }
 };

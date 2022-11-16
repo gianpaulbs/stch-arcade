@@ -160,7 +160,7 @@ namespace stcharcade {
 			}
 
 			private: System::Void FrmBackground_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-				controlador->MovimientoJugador(true, e->KeyCode);
+				controlador->MovimientoManual(true, e->KeyCode);
 
 				if (e->KeyCode == Keys::Enter) {
 					controlador->Habilitar_Aliados();
@@ -168,7 +168,7 @@ namespace stcharcade {
 			}
 
 			private: System::Void FrmBackground_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-				controlador->MovimientoJugador(false, e->KeyCode);
+				controlador->MovimientoManual(false, e->KeyCode);
 			}
 			#pragma endregion
 	private: System::Void PnlGame_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {

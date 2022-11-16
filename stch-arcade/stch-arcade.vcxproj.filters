@@ -50,5 +50,8 @@
     <ClInclude Include="Info.h">
       <Filter>Archivos de encabezado\Clases</Filter>
     </ClInclude>
+    <ClInclude Include="Rectangulo.h">
+      <Filter>Archivos de encabezado\Clases</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -137,6 +137,7 @@
     <ClInclude Include="Info.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="Poblador.h" />
+    <ClInclude Include="Rectangulo.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FrmBackground.resx">
