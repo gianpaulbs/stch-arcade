@@ -1,4 +1,5 @@
 #pragma once
+#include <time.h>
 #include "Entidad.h"
 
 enum SpritePoblador {
@@ -13,13 +14,14 @@ enum SpritePoblador {
 class Poblador : public Entidad {
 private:
 	bool enfermo;
+	int time;
 	SpritePoblador accion;
 public:
 	Poblador(Bitmap^ img) {
 		enfermo = false;
 		x = rand() % 1200;
 		y = rand() % 680;
-		
+		time = clock();
 		if (rand() % 2 == 0) {
 			dx = rand() % 2;
 			if (dx == 0) dx = -1;
@@ -34,7 +36,8 @@ public:
 		alto = img->Height / 4;
 		accion = eCaminarAbajo;
 	}
-
+	int GetTime() { return time; }
+	
 	SpritePoblador GetAccion() { return accion; }
 
 	void SetAccion(SpritePoblador value) { accion = value; }
@@ -42,6 +45,7 @@ public:
 	bool GetEnfermo() { return enfermo; }
 
 	void Mover(Graphics^ g, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
+		if (time >= 3000)enfermo = true;
 		if (!enfermo) {
 			if (NextArea().IntersectsWith(r1) ||
 				NextArea().IntersectsWith(r2) ||
@@ -110,6 +114,14 @@ public:
 	}
 
 	void Mover(Graphics^ g,Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
-		for each (Poblador * E in pobladores) E->Mover(g,r1,r2,r3,r4); }
+		for each (Poblador * E in pobladores) {
+			if (E->GetTime() >= 3000) {
+				E->SetEnfermo(true);
+				E->SetDX(0);
+				E->SetDY(0);
+			}
+			E->Mover(g, r1, r2, r3, r4);
+		}
+	}
 	void Mostrar(Graphics^ g, Bitmap^ img) { for each (Poblador * E in pobladores) E->Mostrar(g, img); }
 };

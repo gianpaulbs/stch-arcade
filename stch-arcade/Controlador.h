@@ -32,7 +32,7 @@ private:
 	Bitmap^ imgAliado;
 
 	int pobladorAsaciar;
-	int cooldownCobardia;
+	int cooldownCobardia, cooldownCobardiaManual, cooldownCobardiaAutomatica;
 	int cooldownAtaqueEnemigo;
 	int tiempo;
 	bool resultado;
@@ -61,6 +61,8 @@ public:
 
 		pobladorAsaciar = 0;
 		cooldownCobardia = 0;
+		cooldownCobardiaManual = 0;
+		cooldownCobardiaAutomatica = 0;
 		cooldownAtaqueEnemigo = 0;
 		objetivo = 30;
 		tiempo = 90 * 1000 + clock();
@@ -180,7 +182,6 @@ public:
 			aliadoManual->GetAccion() != aMorir) {
 			aliadoManual->Mover(g, pobladores->Get(pobladorAsaciar));
 		}
-		pobladores->Mover(g, rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
 		aliadoAutomatico->Mover(g, pobladores->Get(pobladorAsaciar));
 		if (aliadoManual->GetVisible())enemigoAliadoManual->nMover(g, aliadoManual);
 		if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->nMover(g, aliadoAutomatico);
@@ -191,17 +192,42 @@ public:
 				cooldownCobardia = clock();
 			}
 		}
+		if (aliadoManual->GetAccion() >= aAtacarAbajo && aliadoManual->GetAccion() <= aAtacarArriba) {
+			if (enemigoAliadoManual->Colision(aliadoManual->HitBox())) {
+				enemigoAliadoManual->SetAvergonzado(true);
+				cooldownCobardiaManual = clock();
+			}
+		}
 
-		if (enemigoHeroe->GetAvergonzado()==true && clock() - cooldownCobardia >= 4000) {
+
+		if (enemigoHeroe->GetAvergonzado()==true && clock() - cooldownCobardia >= 10000) {
 			enemigoHeroe->SetAvergonzado(false);
 			enemigoHeroe->SetX(600);
 			enemigoHeroe->SetY(300);
 			enemigoHeroe->SetVisible(true);
 			enemigoHeroe->Mostrar(g, imgEnemigo);
 		}
-		
+		if (enemigoAliadoManual->GetAvergonzado() == true && clock() - cooldownCobardiaManual >= 10000) {
+			enemigoAliadoManual->SetAvergonzado(false);
+			enemigoAliadoManual->SetX(600);
+			enemigoAliadoManual->SetY(300);
+			enemigoAliadoManual->SetVisible(true);
+			enemigoAliadoManual->Mostrar(g, imgEnemigo);
+		}
 		if (clock() >= tiempo) {
 			jugador->SetAccion(Morir);
+		}
+
+		for (int i = 0;i<pobladores->Size();i++) {
+			if (pobladores->Get(i)->GetTime() >= 2000) {
+				pobladores->Get(i)->SetEnfermo(true);
+				pobladores->Get(i)->SetEnfermo(true);
+				pobladores->Get(i)->Mover(g, rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
+			}
+			else if(pobladores->Get(i)->GetEnfermo() == false) {
+				pobladores->Get(i)->Mover(g, rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());;
+			}
+		
 		}
 
 		if (objetivo == jugador->GetPuntos()) {
