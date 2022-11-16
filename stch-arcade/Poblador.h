@@ -18,7 +18,7 @@ public:
 	Poblador(Bitmap^ img) {
 		enfermo = false;
 		x = rand() % 1200;
-		y = rand() % 700;
+		y = rand() % 680;
 		
 		if (rand() % 2 == 0) {
 			dx = rand() % 2;

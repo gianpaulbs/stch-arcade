@@ -79,6 +79,39 @@ private:
 			}
 		}
 
+
+		void nMover(Graphics^ g, Aliado* aliado) {
+			if (!visible) return;
+			if (avergonzado == false) {
+				SetDX(2);
+				if (x == aliado->GetX())x += 0;
+				else if (x > aliado->GetX()) {
+					accion = enCaminarIzquierda;
+					x -= dx;
+				}
+				else if ((x < aliado->GetX()) && (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) {
+					accion = enCaminarDerecha;
+					x += dx;
+				}
+
+				if (y == aliado->GetY())y += 0;
+				else if (y > aliado->GetY()) {
+					//accion = aCaminarArriba;
+					y -= dy;
+				}
+				else if ((y < aliado->GetY()) && (y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) {
+					//accion = aCaminarAbajo;
+					y += dy;
+				}
+			}
+			else {
+				accion = enCaminarIzquierda;
+				SetDX(20);
+				x -= dx;
+				if (x - 1 == 0)visible = false;
+			}
+		}
+
 		void Mostrar(Graphics^ g, Bitmap^ img) {
 			if (!visible) return;
 
