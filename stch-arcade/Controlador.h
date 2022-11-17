@@ -5,6 +5,7 @@
 #include "Aliado.h"
 #include "Enemigo.h"
 #include "Rectangulo.h"
+#include "Medicina.h"
 #include <vector>
 using namespace std;
 
@@ -18,7 +19,7 @@ private:
 	Enemigo* enemigoHeroe;
 	Enemigo* enemigoAliadoAutomatico;
 	Enemigo* enemigoAliadoManual;
-
+	Medicinas* medicinas;
 
 	Pobladores* pobladores;
 	Rectangulo* rectangulo1;
@@ -30,6 +31,7 @@ private:
 	Bitmap^ imgJugador;
 	Bitmap^ imgPoblador;
 	Bitmap^ imgAliado;
+	Bitmap^ imgMedicina;
 
 	int pobladorAsaciar;
 	int cooldownCobardia, cooldownCobardiaManual, cooldownCobardiaAutomatica;
@@ -45,6 +47,7 @@ public:
 		imgPoblador = gcnew Bitmap("resources/images/rojo.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
 		imgEnemigo = gcnew Bitmap("resources/images/proton.png");
+		imgMedicina = gcnew Bitmap("resources/images/medicina.png");
 		rectangulo1 = new Rectangulo(780, 550, 510,100);
 		rectangulo2 = new Rectangulo(800, 480, 510, 100);
 		rectangulo3 = new Rectangulo(900, 290, 200, 150);
@@ -58,7 +61,7 @@ public:
 		enemigoHeroe = new Enemigo(imgEnemigo);
 		enemigoAliadoAutomatico = new Enemigo(imgEnemigo);
 		enemigoAliadoManual = new Enemigo(imgEnemigo);
-
+		medicinas = new Medicinas(20, jugador->Area(), imgMedicina);
 		pobladorAsaciar = 0;
 		cooldownCobardia = 0;
 		cooldownCobardiaManual = 0;
@@ -153,6 +156,7 @@ public:
 		rectangulo2->Mostrar(g);
 		rectangulo3->Mostrar(g);
 		rectangulo4->Mostrar(g);
+		medicinas->Mostrar(g, imgMedicina);
 
 
 		//g->DrawString("Tiempo: " + a, gcnew Font("Arial", 12), Brushes::Black, 0, 90);

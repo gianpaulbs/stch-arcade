@@ -136,6 +136,7 @@
     <ClInclude Include="Controlador.h" />
     <ClInclude Include="Info.h" />
     <ClInclude Include="Jugador.h" />
+    <ClInclude Include="Medicina.h" />
     <ClInclude Include="Poblador.h" />
     <ClInclude Include="Rectangulo.h" />
   </ItemGroup>
