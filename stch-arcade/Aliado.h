@@ -22,26 +22,30 @@ class Aliado : public Entidad
 	private:
 		int vidas;
 		int puntos;
+		int cubetas;
+		int medicamentos;
 		int ID;
 		bool visible;
 		SpriteAliado accion;
 
 	public:
 		Aliado(Bitmap^ img, int id) {
-			x = 60; y = 60;
+			x = 65; y = 65;
 
 			ancho = img->Width / 3;
 			alto = img->Height / 4;
 
 			accion = aCaminarAbajo;
-
+			cubetas = 0;
 			puntos = 0;
 			ID = id;
 			if (ID == 1) dx = dy = 2;
 			else 		 dx = dy = 0;
+			medicamentos = 0;
 
 			visible = false;
 		}
+		
 
 		void SetVidas(int value) { vidas += value; }
 		void SetPuntos(int value) { puntos += value; }
@@ -51,13 +55,22 @@ class Aliado : public Entidad
 				IDx = 0;
 			accion = value;
 		}
+		void RecuperarCubeta(int value) { cubetas += value; }
 
 		int GetID() { return ID; }
 		int GetVidas() { return vidas; }
 		int GetPuntos() { return puntos; }
 		bool GetVisible() { return visible; }
 		SpriteAliado GetAccion() { return accion; }
+		int GetCubetas() { return cubetas; }
+		void SetCubetas(int value) { cubetas -= value; }
+		void RecargarCubeta() {
+			if (GetX() <= 60 && GetY() <= 60 && cubetas < 3)cubetas=3;
+		}
 
+		int GetMedicamentos() { return medicamentos; }
+		void AgregarMedicamentos(int value) { medicamentos += value; }
+		void UsarMedicamento(int value) { medicamentos -= value; }
 		void Mover(Graphics^ g, Poblador* poblador) {
 			if (!visible) return;
 
@@ -68,24 +81,48 @@ class Aliado : public Entidad
 					y += dy;
 			}
 			if (ID == 1) {
-				if (x == poblador->GetX())x += 0;
-				else if (x > poblador->GetX()) {
-					accion = aCaminarIzquierda;
-					x -= dx;
-				}
-				else if ((x < poblador->GetX()) && (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) {
-					accion = aCaminarDerecha;
-					x += dx;
-				}
+				if (GetCubetas() > 0) {
+					if (x == poblador->GetX())x += 0;
+					else if (x > poblador->GetX()) {
+						accion = aCaminarIzquierda;
+						x -= dx;
+					}
+					else if ((x < poblador->GetX()) && (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) {
+						accion = aCaminarDerecha;
+						x += dx;
+					}
 
-				if (y == poblador->GetY())y += 0;
-				else if (y > poblador->GetY()) {
-					//accion = aCaminarArriba;
-					y -= dy;
+					if (y == poblador->GetY())y += 0;
+					else if (y > poblador->GetY()) {
+						//accion = aCaminarArriba;
+						y -= dy;
+					}
+					else if ((y < poblador->GetY()) && (y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) {
+						//accion = aCaminarAbajo;
+						y += dy;
+					}
 				}
-				else if ((y < poblador->GetY()) && (y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) {
-					//accion = aCaminarAbajo;
-					y += dy;
+				else if (cubetas==0){
+					if (x <= 60) x+= 0;
+					else if (x > 60) {
+						accion = aCaminarIzquierda;
+						x -= dx;
+					}
+					else if (x < 60 && (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) {
+						accion = aCaminarDerecha;
+						x += dx;
+					}
+
+					if (y <= 60)y += 0;
+					else if (y > 60) {
+						//accion = aCaminarArriba;
+						y -= dy;
+					}
+					else if ((y < 60) && (y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) {
+						//accion = aCaminarAbajo;
+						y += dy;
+					}
+					RecargarCubeta();
 				}
 
 			}
