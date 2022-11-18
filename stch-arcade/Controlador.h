@@ -72,7 +72,6 @@ public:
 		rectangulo3 = new Rectangulo(900, 290, 200, 150);
 		rectangulo4 = new Rectangulo(1130, 280, 200, 150);
 		bmpMap = gcnew Bitmap("resources/images/background.png");
-
 		fondo = new Fondo(bmpMap);
 		jugador = new Jugador(imgJugador);
 		pobladores = new Pobladores(imgPoblador,rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
@@ -151,7 +150,7 @@ public:
 			if (tecla == Keys::W) {
 				jugador->SetDY(-v);
 				jugador->SetAccion(CaminarArriba);
-				fondo->SumarY();
+				if(fondo->GetY() > 125)fondo->SumarY();
 			}
 			else if (tecla == Keys::A) {
 				jugador->SetDX(-v);
@@ -197,16 +196,17 @@ public:
 
 	void Mostrar(Graphics^ g, Graphics^ i) {
 		int t = (tiempo - clock()) / 1000;
-		rectangulo1->Mostrar(g);
-		rectangulo2->Mostrar(g);
-		rectangulo3->Mostrar(g);
-		rectangulo4->Mostrar(g);
-		medicinas->Mostrar(g, imgMedicina);
+		
 		Rectangle sectionShown = Rectangle(0, 0, fondo->GetAncho(), fondo->GetAlto());
 		Rectangle zoom = Rectangle(fondo->GetX(), fondo->GetY(), fondo->GetAncho() * 1.5, fondo->GetAlto() * 1.5);
 		g->DrawImage(bmpMap, zoom, sectionShown, GraphicsUnit::Pixel);
 		//g->DrawImage(bmpMap, fondo->GetX(), fondo->GetY(), 1280, 125);
 		//g->DrawString("Tiempo: " + a, gcnew Font("Arial", 12), Brushes::Black, 0, 90);
+		rectangulo1->Mostrar(g);
+		rectangulo2->Mostrar(g);
+		rectangulo3->Mostrar(g);
+		rectangulo4->Mostrar(g);
+		medicinas->Mostrar(g, imgMedicina);
 		pobladores->Mostrar(g, imgPoblador);
 		jugador->Mostrar(g, imgJugador);
 		aliadoManual->Mostrar(g, imgAliado);
