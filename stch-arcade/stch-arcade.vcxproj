@@ -127,6 +127,8 @@
     <ClInclude Include="Aliado.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Entidad.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="Fondo.h" />
     <ClInclude Include="FrmBackground.h">
       <FileType>CppForm</FileType>
     </ClInclude>

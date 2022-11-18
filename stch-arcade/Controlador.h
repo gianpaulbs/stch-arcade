@@ -27,6 +27,7 @@ private:
 	Rectangulo* rectangulo2;
 	Rectangulo* rectangulo3;
 	Rectangulo* rectangulo4;
+	Fondo* fondo;
 	Info^ info;
 	Bitmap^ imgEnemigo;
 	Bitmap^ imgJugador;
@@ -55,6 +56,8 @@ private:
 	int cooldownContagioManual;
 	int cooldownContagioAutomatico;
 	int cooldownRoboHeroe;
+	Bitmap^ bmpMap;
+
 	int cooldownRoboManual;
 
 public:
@@ -68,8 +71,9 @@ public:
 		rectangulo2 = new Rectangulo(800, 430, 510, 100);
 		rectangulo3 = new Rectangulo(900, 290, 200, 150);
 		rectangulo4 = new Rectangulo(1130, 280, 200, 150);
+		bmpMap = gcnew Bitmap("resources/images/background.png");
 
-
+		fondo = new Fondo(bmpMap);
 		jugador = new Jugador(imgJugador);
 		pobladores = new Pobladores(imgPoblador,rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
 		aliadoAutomatico = new Aliado(imgAliado, 1);
@@ -147,18 +151,25 @@ public:
 			if (tecla == Keys::W) {
 				jugador->SetDY(-v);
 				jugador->SetAccion(CaminarArriba);
+				fondo->SumarY();
 			}
 			else if (tecla == Keys::A) {
 				jugador->SetDX(-v);
 				jugador->SetAccion(CaminarIzquierda);
+				if(fondo->GetX()<0)fondo->SumarX();
+
 			}
 			else if (tecla == Keys::S) {
 				jugador->SetDY(v);
 				jugador->SetAccion(CaminarAbajo);
+				fondo->RestarY();
+
 			}
 			else if (tecla == Keys::D) {
 				jugador->SetDX(v);
 				jugador->SetAccion(CaminarDerecha);
+				fondo->RestarX();
+
 			}
 			else if (tecla == Keys::Q) {
 				if (jugador->GetAccion() == CaminarArriba)
@@ -191,8 +202,10 @@ public:
 		rectangulo3->Mostrar(g);
 		rectangulo4->Mostrar(g);
 		medicinas->Mostrar(g, imgMedicina);
-
-
+		Rectangle sectionShown = Rectangle(0, 0, fondo->GetAncho(), fondo->GetAlto());
+		Rectangle zoom = Rectangle(fondo->GetX(), fondo->GetY(), fondo->GetAncho() * 1.5, fondo->GetAlto() * 1.5);
+		g->DrawImage(bmpMap, zoom, sectionShown, GraphicsUnit::Pixel);
+		//g->DrawImage(bmpMap, fondo->GetX(), fondo->GetY(), 1280, 125);
 		//g->DrawString("Tiempo: " + a, gcnew Font("Arial", 12), Brushes::Black, 0, 90);
 		pobladores->Mostrar(g, imgPoblador);
 		jugador->Mostrar(g, imgJugador);

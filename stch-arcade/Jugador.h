@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Fondo.h"
 #include "Entidad.h"
+#include "File.h"
 
 enum SpriteJugador
 {
@@ -28,11 +30,15 @@ class Jugador : public Entidad
 		int puntosInspiracion;
 		bool inspirado;
 		SpriteJugador accion;
-		
+		File* file;
 	public:
+
 		Jugador(Bitmap^ img)
 		{
-			x = 65; y = 65;
+			file = new File();
+			file->readData();
+			x=file->getX();
+			y = file->getY();
 			dx = dy = 0;
 			cubetas = 0;
 			ancho = img->Width / 4;

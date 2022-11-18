@@ -38,7 +38,7 @@ namespace stcharcade {
 
 				/* Inicializamos los mapas de bits con las rutas de la imagen */
 				bmpInfo = gcnew Bitmap("resources/images/tablero.jpg");
-				bmpMap = gcnew Bitmap("resources/images/background.png");
+				//bmpMap = gcnew Bitmap("resources/images/background.png");
 
 				/* Cargamos el controlador del juego */
 				controlador = gcnew ControladorJuego();
@@ -68,7 +68,6 @@ namespace stcharcade {
 			BufferedGraphics^ bfGame;
 
 			Bitmap^ bmpInfo;
-			Bitmap^ bmpMap;
 
 			ControladorJuego^ controlador;
 
@@ -106,6 +105,7 @@ namespace stcharcade {
 				this->PnlGame->Name = L"PnlGame";
 				this->PnlGame->Size = System::Drawing::Size(1920, 915);
 				this->PnlGame->TabIndex = 1;
+				this->PnlGame->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmBackground::PnlGame_Paint);
 				// 
 				// Loop
 				// 
@@ -136,7 +136,7 @@ namespace stcharcade {
 				bfInfo->Graphics->DrawImage(bmpInfo, 0, 0, 1280, 125);
 				
 				bfGame->Graphics->Clear(Color::White);
-				bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
+				//bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
 
 				controlador->Mostrar(bfGame->Graphics, bfInfo->Graphics);
 				bfInfo->Render(gInfo);
@@ -166,7 +166,9 @@ namespace stcharcade {
 				controlador->MovimientoManual(false, e->KeyCode);
 			}
 			#pragma endregion
-	};
+	private: System::Void PnlGame_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+	}
+};
 
 	/* Si añades eventos al formulario, también estos se añaden a la configuración de los controles uwu */
 }
