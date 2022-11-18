@@ -133,7 +133,24 @@ namespace stcharcade {
 			}
 
 			void Load_ScreenInstructions() {
+				Bitmap^ bmpWASD = gcnew Bitmap("resources/images/wasd.png");
+				Bitmap^ bmpQ = gcnew Bitmap("resources/images/q.png");
+				Bitmap^ bmpEnter = gcnew Bitmap("resources/images/enter2.png");
+				Bitmap^ bmpDescriptionWASD = gcnew Bitmap("resources/images/descriptionwasd.png");
+				Bitmap^ bmpDescriptionQ = gcnew Bitmap("resources/images/descriptionq.png");
+				Bitmap^ bmpDescriptionEnter = gcnew Bitmap("resources/images/descriptionenter.png");
 
+				bfMenu->Graphics->DrawImage(bmpWASD, 120, 85, 210, 150);
+				bfMenu->Graphics->DrawImage(bmpQ, 185, 310, 80, 80);
+				bfMenu->Graphics->DrawImage(bmpEnter, 140, 475, 175, 85);
+				bfMenu->Graphics->DrawImage(bmpDescriptionWASD, 445, 145, 680, 30);
+
+				delete bmpWASD;
+				delete bmpQ;
+				delete bmpEnter;
+				delete bmpDescriptionWASD;
+				delete bmpDescriptionQ;
+				delete bmpDescriptionEnter;
 			}
 
 			void Load_ScreenCredits() {
@@ -145,13 +162,8 @@ namespace stcharcade {
 				Bitmap^ bmpNameJoaquin = gcnew Bitmap("resources/images/joaquinruiz.png");
 
 				bfMenu->Graphics->DrawImage(bmpProfileGianpaul, 150, posYCredits_G, 250, 250);
-
 				bfMenu->Graphics->DrawImage(bmpProfileDaniella, 510, posYCredits_D, 230, 230);
-				
 				bfMenu->Graphics->DrawImage(bmpProfileJoaquin, 880, posYCredits_J, 230, 230);
-
-				/* G y J = 55 y 75, 370 */
-				//if ()
 
 				if (posYCredits_G <= 55) posYCredits_G += 15;
 				else bfMenu->Graphics->DrawImage(bmpNameGianpaul, 132, 330, 275, 20);
@@ -268,9 +280,14 @@ namespace stcharcade {
 				}
 
 				/* Visualización de distintas pantallas en el menú */
-				if (viewScreenPlayGame) Load_ScreenPlayGame();
-				if (viewScreenInstructions) Load_ScreenInstructions();
-				if (viewScreenCredits) Load_ScreenCredits();
+				if (viewScreenPlayGame)
+					Load_ScreenPlayGame();
+				
+				if (viewScreenInstructions) 
+					Load_ScreenInstructions();
+				
+				if (viewScreenCredits) 
+					Load_ScreenCredits();
 
 				bfMenu->Render(gMenu);
 			}
