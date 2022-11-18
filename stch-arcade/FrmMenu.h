@@ -81,6 +81,10 @@ namespace stcharcade {
 			bool playAnimationVertical_Title = false;
 			bool playAnimationHorizontal_Title = true;
 
+			int posYCredits_G = -250;
+			int posYCredits_J = -230;
+			int posYCredits_D = 680;
+
 			bool Animacion_Titulo() {
 				bfMenu->Graphics->DrawImage(bmpTitulo, posXTitulo, posYTitulo, 900, 500);
 				
@@ -98,7 +102,7 @@ namespace stcharcade {
 					posXTitulo += 10;
 
 				if (playAnimationVertical_Title)
-					posYTitulo -= 10;
+					posYTitulo -= 40;
 				
 				return playAnimation_Title;
 			}
@@ -140,20 +144,35 @@ namespace stcharcade {
 				Bitmap^ bmpNameDaniella = gcnew Bitmap("resources/images/daniellavargas.png");
 				Bitmap^ bmpNameJoaquin = gcnew Bitmap("resources/images/joaquinruiz.png");
 
+				bfMenu->Graphics->DrawImage(bmpProfileGianpaul, 150, posYCredits_G, 250, 250);
 
-				bfMenu->Graphics->DrawImage(bmpProfileGianpaul, 150, 55, 250, 250);
-				bfMenu->Graphics->DrawImage(bmpNameGianpaul, 120, 110, 320, 20);
-				bfMenu->Graphics->DrawImage(bmpProfileDaniella, 510, 340, 230, 230);
-				bfMenu->Graphics->DrawImage(bmpProfileJoaquin, 880, 75, 230, 230);
+				bfMenu->Graphics->DrawImage(bmpProfileDaniella, 510, posYCredits_D, 230, 230);
+				
+				bfMenu->Graphics->DrawImage(bmpProfileJoaquin, 880, posYCredits_J, 230, 230);
+
+				/* G y J = 55 y 75, 370 */
+				//if ()
+
+				if (posYCredits_G <= 55) posYCredits_G += 15;
+				else bfMenu->Graphics->DrawImage(bmpNameGianpaul, 132, 330, 275, 20);
+
+				if (posYCredits_J <= 75) posYCredits_J += 15;
+				else bfMenu->Graphics->DrawImage(bmpNameJoaquin, 875, 330, 245, 20);
+
+				if (posYCredits_D >= 370) posYCredits_D -= 15;
+				else bfMenu->Graphics->DrawImage(bmpNameDaniella, 505, 610, 275, 20);
 
 				delete bmpProfileGianpaul;
-				delete bmpNameGianpaul;
 				delete bmpProfileDaniella;
 				delete bmpProfileJoaquin;
+				delete bmpNameGianpaul;
+				delete bmpNameDaniella;
+				delete bmpNameJoaquin;
 			}
 
-
 			void Reiniciar_Menu() {
+				indexButtons = 1;
+
 				posXTitulo = -725;
 				posYTitulo = -50;
 
@@ -164,6 +183,10 @@ namespace stcharcade {
 				playAnimationVertical_Title = false;
 				playAnimationHorizontal_Title = true;
 				playAnimation_Title = true;
+
+				posYCredits_G = -250;
+				posYCredits_J = -230;
+				posYCredits_D = 680;
 			}
 
 			void Habilitar_BtnJugar() {
