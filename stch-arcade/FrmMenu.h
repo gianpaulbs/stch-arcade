@@ -124,6 +124,35 @@ namespace stcharcade {
 				if (indexButtons == 3) viewScreenCredits = true;
 			}
 
+			void Load_ScreenPlayGame() {
+
+			}
+
+			void Load_ScreenInstructions() {
+
+			}
+
+			void Load_ScreenCredits() {
+				Bitmap^ bmpProfileGianpaul = gcnew Bitmap("resources/images/gbernal.png");
+				Bitmap^ bmpProfileDaniella = gcnew Bitmap("resources/images/daniella.png");
+				Bitmap^ bmpProfileJoaquin = gcnew Bitmap("resources/images/joaquin.png");
+				Bitmap^ bmpNameGianpaul = gcnew Bitmap("resources/images/gianpaulbernal.png");
+				Bitmap^ bmpNameDaniella = gcnew Bitmap("resources/images/daniellavargas.png");
+				Bitmap^ bmpNameJoaquin = gcnew Bitmap("resources/images/joaquinruiz.png");
+
+
+				bfMenu->Graphics->DrawImage(bmpProfileGianpaul, 150, 55, 250, 250);
+				bfMenu->Graphics->DrawImage(bmpNameGianpaul, 120, 110, 320, 20);
+				bfMenu->Graphics->DrawImage(bmpProfileDaniella, 510, 340, 230, 230);
+				bfMenu->Graphics->DrawImage(bmpProfileJoaquin, 880, 75, 230, 230);
+
+				delete bmpProfileGianpaul;
+				delete bmpNameGianpaul;
+				delete bmpProfileDaniella;
+				delete bmpProfileJoaquin;
+			}
+
+
 			void Reiniciar_Menu() {
 				posXTitulo = -725;
 				posYTitulo = -50;
@@ -216,17 +245,9 @@ namespace stcharcade {
 				}
 
 				/* Visualización de distintas pantallas en el menú */
-				if (viewScreenPlayGame) {
-
-				}
-
-				if (viewScreenInstructions) {
-
-				}
-
-				if (viewScreenCredits) {
-
-				}
+				if (viewScreenPlayGame) Load_ScreenPlayGame();
+				if (viewScreenInstructions) Load_ScreenInstructions();
+				if (viewScreenCredits) Load_ScreenCredits();
 
 				bfMenu->Render(gMenu);
 			}
