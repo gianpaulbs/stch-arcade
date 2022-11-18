@@ -110,7 +110,7 @@ ref class Info {
 			bmpDescription = gcnew Bitmap("resources/images/description.png");
 		}
 
-		void Mostrar(Graphics^ g, int t, int m, bool visibleAliadoM, bool visibleAliadoA) {
+		void Mostrar(Graphics^ g, int t, int m, bool visibleAliadoM, bool visibleAliadoA, int pobladoresSaciados) {
 			g->DrawImage(bmpPoints, 121, 28, 55, 45);
 			g->DrawImage(bmpMedicina, 345, 23, 40, 55);
 			g->DrawImage(bmpRostroPoblador, 590, 20, 85, 57);
@@ -119,7 +119,7 @@ ref class Info {
 
 			Animacion_Temporizador(g, t);
 			Animacion_Medicamentos(g, m);
-			Animacion_Cabezas(g, 54);
+			Animacion_Cabezas(g, pobladoresSaciados);
 			Animacion_PressEnter(g, t, visibleAliadoM, visibleAliadoA);
 		}
 };

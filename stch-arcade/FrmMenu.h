@@ -116,8 +116,8 @@ namespace stcharcade {
 				delete bmpBtnInstrucciones;
 				delete bmpBtnCreditos;
 			}
-
-			void Transicion_Pantallas() {
+			
+			void Transicion_Pantallas(){
 				playAnimationVertical_Title = true;
 				if (indexButtons == 1) viewScreenPlayGame = true;
 				if (indexButtons == 2) viewScreenInstructions = true;
@@ -176,9 +176,11 @@ namespace stcharcade {
 				// 
 				this->PnlMenu->BackColor = System::Drawing::Color::Transparent;
 				this->PnlMenu->Location = System::Drawing::Point(0, 0);
+				this->PnlMenu->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->PnlMenu->Name = L"PnlMenu";
-				this->PnlMenu->Size = System::Drawing::Size(1280, 682);
+				this->PnlMenu->Size = System::Drawing::Size(1920, 1049);
 				this->PnlMenu->TabIndex = 0;
+				this->PnlMenu->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmMenu::PnlMenu_Paint);
 				// 
 				// Loop
 				// 
@@ -188,15 +190,15 @@ namespace stcharcade {
 				// 
 				// FrmMenu
 				// 
-				this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+				this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				this->ClientSize = System::Drawing::Size(1280, 682);
+				this->ClientSize = System::Drawing::Size(1920, 1049);
 				this->Controls->Add(this->PnlMenu);
-				this->Margin = System::Windows::Forms::Padding(2);
 				this->Name = L"FrmMenu";
 				this->Text = L"FrmMenu";
 				this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmMenu::FrmMenu_KeyDown);
 				this->ResumeLayout(false);
+
 			}
 			#pragma endregion
 
@@ -256,5 +258,7 @@ namespace stcharcade {
 				bfMenu->Render(gMenu);
 			}
 			#pragma endregion
-	};
+	private: System::Void PnlMenu_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+	}
+};
 }

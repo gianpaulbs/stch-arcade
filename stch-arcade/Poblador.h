@@ -11,16 +11,21 @@ enum SpritePoblador {
 	eMorir
 };
 
+//poblacion al conjunto
+
 class Poblador : public Entidad {
 private:
 	bool enfermo;
+	bool saciado;
+	bool visible;
 	int time;
 	SpritePoblador accion;
 public:
 	Poblador(Bitmap^ img) {
 		enfermo = false;
-		x = rand() % 1200;
-		y = rand() % 680;
+		saciado = false;
+		x = rand() % 1170;
+		y = rand() % 550;
 		time = clock();
 		if (rand() % 2 == 0) {
 			dx = rand() % 2;
@@ -39,14 +44,19 @@ public:
 	int GetTime() { return time; }
 	
 	SpritePoblador GetAccion() { return accion; }
-
+	void SetVisible(int value) { visible = value; }
+	bool GetVisible() { return visible; }
 	void SetAccion(SpritePoblador value) { accion = value; }
 	void SetEnfermo(bool value) { enfermo = value; }
 	bool GetEnfermo() { return enfermo; }
-
+	void SetSaciado(bool value) { saciado = value; }
+	bool GetSaciado() { return saciado; }
 	void Mover(Graphics^ g, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
-		if (time >= 3000)enfermo = true;
-		if (!enfermo) {
+		if (clock() - time >= 20000) {
+			SetEnfermo(true);
+			time = INT_MAX;
+		}
+		if (!enfermo&&!saciado) {
 			if (NextArea().IntersectsWith(r1) ||
 				NextArea().IntersectsWith(r2) ||
 				NextArea().IntersectsWith(r3) ||
@@ -63,9 +73,18 @@ public:
 			x += dx;
 			y += dy;
 		}
-		else {
-			dy = dx = 0;
+		else if(enfermo){
+			SetDY(0);
+			SetDX(0);
 			accion = eCaminarAbajo;
+			IDx = 0;
+		}
+		if (saciado && !enfermo) {
+			accion = eCaminarIzquierda;
+			IDx = (IDx + 1) % 4;
+			SetDX(5);
+			x -= dx;
+			if (x <= 0)SetVisible(false);
 		}
 	}
 
@@ -76,6 +95,8 @@ public:
 		//g->DrawRectangle(Pens::Blue, HitBox());
 
 		if (accion >= eCaminarAbajo && accion <= eCaminarArriba) IDx = (IDx + 1) % 4;
+		if (GetEnfermo() == true&& GetSaciado()==false)IDx = 0;
+		if(saciado) IDx = (IDx + 1) % 4;
 	}
 };
 
@@ -83,8 +104,8 @@ class Pobladores {
 private:
 	vector<Poblador*> pobladores;
 public:
-	Pobladores(Bitmap^ img, int cant, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
-		for (int i = 0; i < cant; i++) {
+	Pobladores(Bitmap^ img, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
+		for (int i = 0; i < 5; i++) {
 			Poblador* poblador = new Poblador(img);
 			if (poblador->Area().IntersectsWith(r1) == false &&
 				poblador->Area().IntersectsWith(r2) == false &&
@@ -101,11 +122,32 @@ public:
 
 	~Pobladores() { for each (Poblador * E in pobladores) delete E; }
 
-	void Eliminar(int pos) { pobladores.erase(pobladores.begin() + pos); }
+	void AgregarPobladores(Bitmap^ img, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
+		for (int i = 0; i < 5; i++) {
+			Poblador* poblador = new Poblador(img);
+			if (poblador->Area().IntersectsWith(r1) == false &&
+				poblador->Area().IntersectsWith(r2) == false &&
+				poblador->Area().IntersectsWith(r3) == false &&
+				poblador->Area().IntersectsWith(r4) == false)
+				pobladores.push_back(poblador);
+			else {
+				delete poblador;
+				i--;
+			}
+		}
+	}
+
+	
 
 	int Size() { return pobladores.size(); }
 
 	Poblador* Get(int pos) { return pobladores[pos]; }
+
+	void Eliminar() {
+		for(int i=0;i<pobladores.size();i++)
+		if (pobladores[i]->GetVisible()==false)
+			pobladores.erase(pobladores.begin() + i);
+	}
 
 	bool Colision(Rectangle obj) {
 		for each (Poblador * E in pobladores)
@@ -115,11 +157,6 @@ public:
 
 	void Mover(Graphics^ g,Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
 		for each (Poblador * E in pobladores) {
-			if (E->GetTime() >= 3000) {
-				E->SetEnfermo(true);
-				E->SetDX(0);
-				E->SetDY(0);
-			}
 			E->Mover(g, r1, r2, r3, r4);
 		}
 	}

@@ -72,9 +72,6 @@ namespace stcharcade {
 
 			ControladorJuego^ controlador;
 
-		protected:
-		protected:
-
 		private:
 			/// <summary>
 			/// Variable del diseñador necesaria.
@@ -101,7 +98,6 @@ namespace stcharcade {
 				this->PnlInfo->Name = L"PnlInfo";
 				this->PnlInfo->Size = System::Drawing::Size(1920, 192);
 				this->PnlInfo->TabIndex = 0;
-				this->PnlInfo->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmBackground::PnlInfo_Paint);
 				// 
 				// PnlGame
 				// 
@@ -110,7 +106,6 @@ namespace stcharcade {
 				this->PnlGame->Name = L"PnlGame";
 				this->PnlGame->Size = System::Drawing::Size(1920, 915);
 				this->PnlGame->TabIndex = 1;
-				this->PnlGame->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmBackground::PnlGame_Paint);
 				// 
 				// Loop
 				// 
@@ -171,9 +166,7 @@ namespace stcharcade {
 				controlador->MovimientoManual(false, e->KeyCode);
 			}
 			#pragma endregion
-	private: System::Void PnlGame_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-	}
-private: System::Void PnlInfo_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-}
-};
+	};
+
+	/* Si añades eventos al formulario, también estos se añaden a la configuración de los controles uwu */
 }

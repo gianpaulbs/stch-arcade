@@ -19,11 +19,12 @@ private:
 	SpriteEnemigo accion;
 	bool visible;
 	bool avergonzado;
+	bool picardia;
 	public:
 		Enemigo(Bitmap^ img) {
 			x = 600;
 			y = 300;
-
+			picardia = false;
 			dx = dy = 2;
 
 			ancho = img->Width / 4;
@@ -44,12 +45,13 @@ private:
 		}
 		bool GetAvergonzado() { return avergonzado; }
 		void SetAvergonzado(bool value) { avergonzado = value; }
-
+		bool GetPicardia() { return picardia; }
+		void SetPicardia(bool value) { picardia = value; }
 		bool GetVisible() { return visible; }
 
-		void Mover(Graphics^ g, Jugador* jugador) {
+		void Mover(Graphics^ g, Jugador* jugador, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
 			if (!visible) return;
-			if (avergonzado == false) {
+			if (avergonzado == false && picardia == false) {
 				SetDX(2);
 				if (x == jugador->GetX())x += 0;
 				else if (x > jugador->GetX()) {
@@ -71,7 +73,26 @@ private:
 					y += dy;
 								}
 			}
-			else {
+			else if (avergonzado == false && picardia == true) {
+				
+						SetDX(1);	
+				
+				if (NextArea().IntersectsWith(r1) ||
+					NextArea().IntersectsWith(r2) ||
+					NextArea().IntersectsWith(r3) ||
+					NextArea().IntersectsWith(r4)) {
+					dx *= -1;
+				}
+				if (!(x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) dx *= -1;
+				if (!(y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) dy *= -1;
+				if (dx < 0) accion = enCaminarIzquierda;
+				else if (dx > 0) accion = enCaminarDerecha;
+				else if (dy < 0) accion = enCaminarArriba;
+				else if (dy > 0) accion = enCaminarAbajo;
+				x += dx;
+				y += dy;
+			}
+			else if(avergonzado==true) {
 				accion = enCaminarIzquierda;
 				SetDX(20);
 				x-=dx;
