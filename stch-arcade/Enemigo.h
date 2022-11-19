@@ -142,7 +142,7 @@ private:
 			g->DrawRectangle(Pens::Blue, HitBox());
 
 			if (accion >= enCaminarAbajo && accion <= enCaminarArriba && (dx != 0 || dy != 0))
-				IDx = (IDx + 1) % 4;
+				IDx = (IDx + 1) % 3;
 			else if (accion == Morir)
 				IDx = (IDx + 1) % 6;
 		}

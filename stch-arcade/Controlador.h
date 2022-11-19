@@ -69,7 +69,6 @@ private:
 public:
 	ControladorJuego() {
 		imgJugador = gcnew Bitmap("resources/images/bruno.png");
-		imgBarraAgua = gcnew Bitmap("resources/images/barra0.png");
 		imgPoblador = gcnew Bitmap("resources/images/rojo.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
 		imgEnemigo = gcnew Bitmap("resources/images/Enemigos.png");
