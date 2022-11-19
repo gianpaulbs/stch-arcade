@@ -33,6 +33,7 @@ private:
 	Bitmap^ imgEnemigo1;
 	Bitmap^ imgEnemigo2;
 	Bitmap^ imgJugador;
+	Bitmap^ imgBarraAgua;
 	Bitmap^ imgPoblador;
 	Bitmap^ imgAliado;
 	Bitmap^ imgMedicina;
@@ -68,6 +69,7 @@ private:
 public:
 	ControladorJuego() {
 		imgJugador = gcnew Bitmap("resources/images/bruno.png");
+		imgBarraAgua = gcnew Bitmap("resources/images/barra0.png");
 		imgPoblador = gcnew Bitmap("resources/images/rojo.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
 		imgEnemigo = gcnew Bitmap("resources/images/Enemigos.png");
@@ -220,7 +222,7 @@ public:
 		rectangulo4->Mostrar(g);
 		medicinas->Mostrar(g, imgMedicina);
 		pobladores->Mostrar(g, imgPoblador);
-		jugador->Mostrar(g, imgJugador);
+		jugador->Mostrar(g, imgJugador, imgBarraAgua);
 		aliadoManual->Mostrar(g, imgAliado);
 		aliadoAutomatico->Mostrar(g, imgAliado);
 		switch (random0) {
