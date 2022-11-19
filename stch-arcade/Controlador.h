@@ -30,6 +30,8 @@ private:
 	Fondo* fondo;
 	Info^ info;
 	Bitmap^ imgEnemigo;
+	Bitmap^ imgEnemigo1;
+	Bitmap^ imgEnemigo2;
 	Bitmap^ imgJugador;
 	Bitmap^ imgPoblador;
 	Bitmap^ imgAliado;
@@ -57,16 +59,20 @@ private:
 	int cooldownContagioAutomatico;
 	int cooldownRoboHeroe;
 	Bitmap^ bmpMap;
+	int random0;
+	int random1;
+	int random2;
 
 	int cooldownRoboManual;
 
 public:
 	ControladorJuego() {
 		imgJugador = gcnew Bitmap("resources/images/bruno.png");
-		imgPoblador = gcnew Bitmap("resources/images/sheet2.png");
+		imgPoblador = gcnew Bitmap("resources/images/rojo.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
-		imgEnemigo = gcnew Bitmap("resources/images/proton.png");
-
+		imgEnemigo = gcnew Bitmap("resources/images/Enemigos.png");
+		imgEnemigo1 = gcnew Bitmap("resources/images/Enemigos1.png");
+		imgEnemigo2 = gcnew Bitmap("resources/images/Enemigos2.png");
 		imgMedicina = gcnew Bitmap("resources/images/medicina.png");
 		rectangulo1 = new Rectangulo(750, 500, 510,100);
 		rectangulo2 = new Rectangulo(800, 430, 510, 100);
@@ -75,7 +81,7 @@ public:
 		bmpMap = gcnew Bitmap("resources/images/background.png");
 		fondo = new Fondo(bmpMap);
 		jugador = new Jugador(imgJugador);
-		pobladores = new Pobladores(imgPoblador,rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());	
+		pobladores = new Pobladores(imgPoblador,rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
 		aliadoAutomatico = new Aliado(imgAliado, 1);
 		aliadoManual = new Aliado(imgAliado, 2);
 		enemigoHeroe = new Enemigo(imgEnemigo);
@@ -106,6 +112,9 @@ public:
 		cooldownContagioAutomatico = 0;
 		cooldownRoboHeroe = 0;
 		cooldownRoboManual = 0;
+		random0 = rand() % 3;
+		random1 = rand() % 3;
+		random2 = rand() % 3;
 	}
 
 	~ControladorJuego() {
@@ -197,6 +206,8 @@ public:
 
 	void Mostrar(Graphics^ g, Graphics^ i) {
 		int t = (tiempo - clock()) / 1000;
+		srand((unsigned)time(NULL));
+		
 		
 		Rectangle sectionShown = Rectangle(0, 0, fondo->GetAncho(), fondo->GetAlto());
 		Rectangle zoom = Rectangle(fondo->GetX(), fondo->GetY(), fondo->GetAncho() * 1.5, fondo->GetAlto() * 1.5);
@@ -212,9 +223,41 @@ public:
 		jugador->Mostrar(g, imgJugador);
 		aliadoManual->Mostrar(g, imgAliado);
 		aliadoAutomatico->Mostrar(g, imgAliado);
-		enemigoHeroe->Mostrar(g, imgEnemigo);
-		if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo);
-		if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo);
+		switch (random0) {
+		case 0:
+			enemigoHeroe->Mostrar(g, imgEnemigo);
+			break;
+		case 1:
+			enemigoHeroe->Mostrar(g, imgEnemigo1);
+			break;
+		case 2:
+			enemigoHeroe->Mostrar(g, imgEnemigo2);
+			break;
+		}
+
+		switch (random1) {
+		case 0:
+			if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo);
+			break;
+		case 1:
+			if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo1);
+			break;
+		case 2:
+			if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo2);
+			break;
+		}
+		switch (random2) {
+		case 0:
+			if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo);
+			break;
+		case 1:
+			if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo1);
+			break;
+		case 2:
+			if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo2);
+			break;
+		}
+
 		totalMedicamentos = jugador->GetMedicamentos() + aliadoManual->GetMedicamentos() + aliadoAutomatico->GetMedicamentos();
 		info->Mostrar(i, t, totalMedicamentos, aliadoManual->GetVisible(), aliadoAutomatico->GetVisible(), pobladoresSaciados);
 	}
@@ -274,14 +317,14 @@ public:
 			enemigoHeroe->SetX(600);
 			enemigoHeroe->SetY(300);
 			enemigoHeroe->SetVisible(true);
-			enemigoHeroe->Mostrar(g, imgEnemigo);
+
 		}
 		if (enemigoAliadoManual->GetAvergonzado() == true && clock() - cooldownCobardiaManual >= 10000) {
 			enemigoAliadoManual->SetAvergonzado(false);
 			enemigoAliadoManual->SetX(600);
 			enemigoAliadoManual->SetY(300);
 			enemigoAliadoManual->SetVisible(true);
-			enemigoAliadoManual->Mostrar(g, imgEnemigo);
+
 		}
 		if (clock() >= tiempo) {
 			jugador->SetAccion(Morir);
