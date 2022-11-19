@@ -19,7 +19,7 @@ namespace stcharcade {
 			FrmBackground(void)
 			{
 				InitializeComponent();
-				srand(time(NULL));
+				//srand(time(NULL));
 
 				/* Inicializamos las variables gráficas
 				 * que nos permitirá crear gráficos donde

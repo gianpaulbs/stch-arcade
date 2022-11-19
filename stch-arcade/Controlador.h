@@ -66,6 +66,7 @@ public:
 		imgPoblador = gcnew Bitmap("resources/images/sheet2.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
 		imgEnemigo = gcnew Bitmap("resources/images/proton.png");
+
 		imgMedicina = gcnew Bitmap("resources/images/medicina.png");
 		rectangulo1 = new Rectangulo(750, 500, 510,100);
 		rectangulo2 = new Rectangulo(800, 430, 510, 100);
@@ -74,7 +75,7 @@ public:
 		bmpMap = gcnew Bitmap("resources/images/background.png");
 		fondo = new Fondo(bmpMap);
 		jugador = new Jugador(imgJugador);
-		pobladores = new Pobladores(imgPoblador,rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
+		pobladores = new Pobladores(imgPoblador,rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());	
 		aliadoAutomatico = new Aliado(imgAliado, 1);
 		aliadoManual = new Aliado(imgAliado, 2);
 		enemigoHeroe = new Enemigo(imgEnemigo);
