@@ -162,12 +162,13 @@ namespace stcharcade {
 			private: System::Void FrmBackground_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 				controlador->MovimientoManual(false, e->KeyCode);
 			}
-			#pragma endregion
 
 			private: System::Void FrmBackground_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 				this->Loop->Enabled = false;
 			}
-};
+			#pragma endregion
+
+	};
 
 	/* Si añades eventos al formulario, también estos se añaden a la configuración de los controles uwu */
 }
