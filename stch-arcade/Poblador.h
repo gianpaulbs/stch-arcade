@@ -30,22 +30,23 @@ private:
 	bool saciado;
 	bool visible;
 	bool movimiento;
-	int time;
+	int timew;
 	int ID;
 	int otrocooldown;
 	int tieempo;
 	SpritePoblador accion;
 public:
 	Poblador(Bitmap^ img) {
+		Random^rand3 = gcnew Random();
 		cooldown = 0;
 		otrocooldown = 0;
-		tieempo = 3000;
+		tieempo = rand3->Next(2000,7000);
 		enfermo = false;
 		movimiento = true;
 		saciado = false;
-		x = rand() % 1170;
-		y = rand() % 550;
-		time = clock();
+		x = rand3->Next(1200);
+		y = rand3->Next(126,365);
+		timew = clock();
 		
 		if (rand() % 2 == 0) {
 			dx = rand() % 2;
@@ -82,7 +83,7 @@ public:
 			break;
 		}
 	}
-	int GetTime() { return time; }
+	int GetTime() { return timew; }
 	
 	SpritePoblador GetAccion() { return accion; }
 	void SetVisible(int value) { visible = value; }
@@ -93,9 +94,9 @@ public:
 	void SetSaciado(bool value) { saciado = value; }
 	bool GetSaciado() { return saciado; }
 	void Mover(Graphics^ g, Rectangle r1, Rectangle r2, Rectangle r3, Rectangle r4) {
-		if (clock() - time >= 20000) {
+		if (clock() - timew >= 20000) {
 			SetEnfermo(true);
-			time = INT_MAX;
+			timew = INT_MAX;
 		}
 		if (!enfermo && !saciado) {
 			if (NextArea().IntersectsWith(r1) ||
@@ -148,7 +149,7 @@ public:
 					dy *= -1;
 				}
 			}
-			if (clock() - cooldown >= 5000) {
+			if (clock() - cooldown >= (rand()%3400+2000)) {
 				movimiento = true;
 			}
 
@@ -206,9 +207,10 @@ public:
 			if (poblador->Area().IntersectsWith(r1) == false &&
 				poblador->Area().IntersectsWith(r2) == false &&
 				poblador->Area().IntersectsWith(r3) == false &&
-				poblador->Area().IntersectsWith(r4) == false)
-			pobladores.push_back(poblador);
-
+				poblador->Area().IntersectsWith(r4) == false){
+				pobladores.push_back(poblador);
+			_sleep(10);
+		}
 			else {
 				delete poblador;
 				i--;
@@ -224,8 +226,10 @@ public:
 			if (poblador->Area().IntersectsWith(r1) == false &&
 				poblador->Area().IntersectsWith(r2) == false &&
 				poblador->Area().IntersectsWith(r3) == false &&
-				poblador->Area().IntersectsWith(r4) == false)
+				poblador->Area().IntersectsWith(r4) == false) {
 				pobladores.push_back(poblador);
+				_sleep(10);
+			}
 			else {
 				delete poblador;
 				i--;
