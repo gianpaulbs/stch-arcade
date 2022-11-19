@@ -93,19 +93,16 @@ namespace stcharcade {
 				// PnlInfo
 				// 
 				this->PnlInfo->Location = System::Drawing::Point(0, 0);
-				this->PnlInfo->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->PnlInfo->Name = L"PnlInfo";
-				this->PnlInfo->Size = System::Drawing::Size(1920, 192);
+				this->PnlInfo->Size = System::Drawing::Size(1280, 125);
 				this->PnlInfo->TabIndex = 0;
 				// 
 				// PnlGame
 				// 
-				this->PnlGame->Location = System::Drawing::Point(0, 192);
-				this->PnlGame->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+				this->PnlGame->Location = System::Drawing::Point(0, 125);
 				this->PnlGame->Name = L"PnlGame";
-				this->PnlGame->Size = System::Drawing::Size(1920, 915);
+				this->PnlGame->Size = System::Drawing::Size(1280, 595);
 				this->PnlGame->TabIndex = 1;
-				this->PnlGame->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmBackground::PnlGame_Paint);
 				// 
 				// Loop
 				// 
@@ -115,14 +112,14 @@ namespace stcharcade {
 				// 
 				// FrmBackground
 				// 
-				this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+				this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				this->ClientSize = System::Drawing::Size(1920, 1050);
+				this->ClientSize = System::Drawing::Size(1280, 682);
 				this->Controls->Add(this->PnlGame);
 				this->Controls->Add(this->PnlInfo);
-				this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->Name = L"FrmBackground";
 				this->Text = L"Background";
+				this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &FrmBackground::FrmBackground_FormClosing);
 				this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyDown);
 				this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyUp);
 				this->ResumeLayout(false);
@@ -166,8 +163,10 @@ namespace stcharcade {
 				controlador->MovimientoManual(false, e->KeyCode);
 			}
 			#pragma endregion
-	private: System::Void PnlGame_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-	}
+
+			private: System::Void FrmBackground_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+				this->Loop->Enabled = false;
+			}
 };
 
 	/* Si añades eventos al formulario, también estos se añaden a la configuración de los controles uwu */

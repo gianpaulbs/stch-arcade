@@ -1,4 +1,6 @@
 #pragma once
+#include "FrmBackground.h"
+
 namespace stcharcade {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -64,16 +66,10 @@ namespace stcharcade {
 			Bitmap^ bmpTitulo;
 			Bitmap^ bmpMenu;
 			Bitmap^ bmpCopyright;
-			Bitmap^ bmpBtnSalir;
 
 			String^ pathSprite_Jugar;
 			String^ pathSprite_Instrucciones;
 			String^ pathSprite_Creditos;
-			
-			int indexButtons = 1;
-			bool viewScreenPlayGame = false;
-			bool viewScreenInstructions = false;
-			bool viewScreenCredits = false;
 
 			int posXTitulo = -725;
 			int posYTitulo = -50;
@@ -81,9 +77,25 @@ namespace stcharcade {
 			bool playAnimationVertical_Title = false;
 			bool playAnimationHorizontal_Title = true;
 
+			int indexButtons_Menu = 1;
+			bool viewScreenMenu = true;
+			bool viewScreenInstructions = false;
+			bool viewScreenCredits = false;
+
 			int posYCredits_G = -250;
 			int posYCredits_J = -230;
 			int posYCredits_D = 680;
+
+			int posXInstr_W = -210;
+			int posXInstr_Q = -85;
+			int posXInstr_E = -180;
+
+			int ventaja;
+			int dificultad;
+			int indexButtons_Play = 1;
+			bool viewScreenPlayGame = false;
+			bool viewChooseVentaja = true;
+			bool viewChooseDifficulty = false;
 
 			bool Animacion_Titulo() {
 				bfMenu->Graphics->DrawImage(bmpTitulo, posXTitulo, posYTitulo, 900, 500);
@@ -107,6 +119,48 @@ namespace stcharcade {
 				return playAnimation_Title;
 			}
 
+			void Liberar_Memoria() {
+				//delete bmpTitulo;
+				//delete bmpMenu;
+				delete bmpCopyright;
+			}
+
+			void Animation_Cursor() {
+				Bitmap^ bmpCursor = gcnew Bitmap("resources/images/cursor.png");
+				Bitmap^ bmpDesc_V1 = gcnew Bitmap("resources/images/descventa1.png");
+				Bitmap^ bmpDesc_V2 = gcnew Bitmap("resources/images/descventa2.png");
+				Bitmap^ bmpDesc_L1 = gcnew Bitmap("resources/images/desclevel1.png");
+				Bitmap^ bmpDesc_L2 = gcnew Bitmap("resources/images/desclevel2.png");
+
+				switch (indexButtons_Play) {
+				case 1:
+					bfMenu->Graphics->DrawImage(bmpCursor, 255, 330, 90, 90);
+
+					if (viewChooseVentaja)
+						bfMenu->Graphics->DrawImage(bmpDesc_V1, 360, 480, 540, 40);
+
+					if (viewChooseDifficulty)
+						bfMenu->Graphics->DrawImage(bmpDesc_L1, 230, 480, 750, 40);
+
+					break;
+				case 2:
+					bfMenu->Graphics->DrawImage(bmpCursor, 885, 330, 90, 90);
+
+					if (viewChooseVentaja)
+						bfMenu->Graphics->DrawImage(bmpDesc_V2, 360, 480, 540, 40);
+
+					if (viewChooseDifficulty)
+						bfMenu->Graphics->DrawImage(bmpDesc_L2, 230, 480, 750, 40);
+					break;
+				}
+
+				delete bmpCursor;
+				delete bmpDesc_V1;
+				delete bmpDesc_V2;
+				delete bmpDesc_L1;
+				delete bmpDesc_L2;
+			}
+
 			void Cargar_Botones() {
 				Bitmap^ bmpBtnJugar = gcnew Bitmap(pathSprite_Jugar);
 				Bitmap^ bmpBtnInstrucciones = gcnew Bitmap(pathSprite_Instrucciones);
@@ -123,13 +177,51 @@ namespace stcharcade {
 			
 			void Transicion_Pantallas(){
 				playAnimationVertical_Title = true;
-				if (indexButtons == 1) viewScreenPlayGame = true;
-				if (indexButtons == 2) viewScreenInstructions = true;
-				if (indexButtons == 3) viewScreenCredits = true;
+				viewScreenMenu = false;
+				if (indexButtons_Menu == 1) viewScreenPlayGame = true;
+				if (indexButtons_Menu == 2) viewScreenInstructions = true;
+				if (indexButtons_Menu == 3) viewScreenCredits = true;
+			}
+
+			void ScreenChooseVentaja() {
+				Bitmap^ bmpVentajas = gcnew Bitmap("resources/images/ventajas.png");
+				Bitmap^ bmpCubeta = gcnew Bitmap("resources/images/cubeta.png");
+				Bitmap^ bmpMedicina = gcnew Bitmap("resources/images/medicina.png");
+				Bitmap^ bmpx3_C = gcnew Bitmap("resources/images/x3.png");
+				Bitmap^ bmpx3_M = gcnew Bitmap("resources/images/x3.png");
+
+				bfMenu->Graphics->DrawImage(bmpVentajas, 480, 50, 300, 60);
+				bfMenu->Graphics->DrawImage(bmpCubeta, 210, 250, 120, 130);
+				bfMenu->Graphics->DrawImage(bmpx3_C, 350, 300, 80, 60);
+				bfMenu->Graphics->DrawImage(bmpMedicina, 840, 250, 120, 130);
+				bfMenu->Graphics->DrawImage(bmpx3_M, 980, 300, 80, 60);
+
+				delete bmpVentajas;
+				delete bmpCubeta;
+				delete bmpMedicina;
+				delete bmpx3_C;
+				delete bmpx3_M;
+			}
+
+			void ScreenChooseDifficulty() {
+				Bitmap^ bmpDificultad = gcnew Bitmap("resources/images/dificultad.png");
+				Bitmap^ bmpBueno = gcnew Bitmap("resources/images/picardia.png");
+				Bitmap^ bmpMalo = gcnew Bitmap("resources/images/llorando.png");
+
+				bfMenu->Graphics->DrawImage(bmpDificultad, 480, 50, 300, 60);
+				bfMenu->Graphics->DrawImage(bmpBueno, 180, 220, 230, 170);
+				bfMenu->Graphics->DrawImage(bmpMalo, 830, 220, 170, 170);
+
+				delete bmpDificultad;
+				delete bmpBueno;
+				delete bmpMalo;
 			}
 
 			void Load_ScreenPlayGame() {
+				if (viewChooseVentaja) ScreenChooseVentaja();
+				if (viewChooseDifficulty) ScreenChooseDifficulty();
 
+				Animation_Cursor();
 			}
 
 			void Load_ScreenInstructions() {
@@ -140,10 +232,18 @@ namespace stcharcade {
 				Bitmap^ bmpDescriptionQ = gcnew Bitmap("resources/images/descriptionq.png");
 				Bitmap^ bmpDescriptionEnter = gcnew Bitmap("resources/images/descriptionenter.png");
 
-				bfMenu->Graphics->DrawImage(bmpWASD, 120, 85, 210, 150);
-				bfMenu->Graphics->DrawImage(bmpQ, 185, 310, 80, 80);
-				bfMenu->Graphics->DrawImage(bmpEnter, 140, 475, 175, 85);
-				bfMenu->Graphics->DrawImage(bmpDescriptionWASD, 445, 145, 680, 30);
+				bfMenu->Graphics->DrawImage(bmpWASD, posXInstr_W, 85, 210, 150);
+				bfMenu->Graphics->DrawImage(bmpQ, posXInstr_Q, 310, 80, 80);
+				bfMenu->Graphics->DrawImage(bmpEnter, posXInstr_E, 475, 175, 85);
+
+				if (posXInstr_W <= 120) posXInstr_W += 20;
+				else bfMenu->Graphics->DrawImage(bmpDescriptionWASD, 445, 145, 680, 30);
+
+				if (posXInstr_Q <= 185) posXInstr_Q += 20;
+				else bfMenu->Graphics->DrawImage(bmpDescriptionQ, 445, 330, 440, 30);
+
+				if (posXInstr_E <= 140) posXInstr_E += 20;
+				else bfMenu->Graphics->DrawImage(bmpDescriptionEnter, 445, 500, 420, 30);
 
 				delete bmpWASD;
 				delete bmpQ;
@@ -183,14 +283,19 @@ namespace stcharcade {
 			}
 
 			void Reiniciar_Menu() {
-				indexButtons = 1;
+				indexButtons_Play = 1;
+				indexButtons_Menu = 1;
 
 				posXTitulo = -725;
 				posYTitulo = -50;
 
+				viewScreenMenu = true;
 				viewScreenPlayGame = false;
 				viewScreenInstructions = false;
 				viewScreenCredits = false;
+
+				viewChooseVentaja = true;
+				viewChooseDifficulty = false;
 
 				playAnimationVertical_Title = false;
 				playAnimationHorizontal_Title = true;
@@ -199,6 +304,13 @@ namespace stcharcade {
 				posYCredits_G = -250;
 				posYCredits_J = -230;
 				posYCredits_D = 680;
+
+				posXInstr_W = -210;
+				posXInstr_Q = -85;
+				posXInstr_E = -180;
+
+				ventaja = 1;
+				dificultad = 1;
 			}
 
 			void Habilitar_BtnJugar() {
@@ -244,7 +356,6 @@ namespace stcharcade {
 				this->PnlMenu->Name = L"PnlMenu";
 				this->PnlMenu->Size = System::Drawing::Size(1920, 1049);
 				this->PnlMenu->TabIndex = 0;
-				this->PnlMenu->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &FrmMenu::PnlMenu_Paint);
 				// 
 				// Loop
 				// 
@@ -293,33 +404,69 @@ namespace stcharcade {
 			}
 
 			private: System::Void FrmMenu_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-				if (e->KeyCode == Keys::Space) 
-					posXTitulo = 185;
+				if (viewScreenMenu) {
+					if (e->KeyCode == Keys::Space)
+						posXTitulo = 185;
 
-				if (posXTitulo != 185) return;
+					if (posXTitulo != 185) return;
 
-				if (e->KeyCode == Keys::Up && indexButtons > 1) 
-					indexButtons--;
-				
-				if (e->KeyCode == Keys::Down && indexButtons < 3) 
-					indexButtons++;
+					if (e->KeyCode == Keys::Up && indexButtons_Menu > 1)
+						indexButtons_Menu--;
 
-				switch (indexButtons) {
-					case 1: Habilitar_BtnJugar(); break;
-					case 2: Habilitar_BtnInstrucciones(); break;
-					case 3: Habilitar_BtnCreditos(); break;
+					if (e->KeyCode == Keys::Down && indexButtons_Menu < 3)
+						indexButtons_Menu++;
+
+					switch (indexButtons_Menu) {
+						case 1: Habilitar_BtnJugar(); break;
+						case 2: Habilitar_BtnInstrucciones(); break;
+						case 3: Habilitar_BtnCreditos(); break;
+					}
+
+					if (e->KeyCode == Keys::Enter) {
+						Transicion_Pantallas();
+						return;
+					}
+
+					if (e->KeyCode == Keys::Escape)
+						Application::Exit();
 				}
 
-				if (e->KeyCode == Keys::Enter) Transicion_Pantallas();
+				if (viewScreenPlayGame) {
+					if (e->KeyCode == Keys::Left && indexButtons_Play > 1)
+						indexButtons_Play--;
 
-				if (e->KeyCode == Keys::Escape && 
+					if (e->KeyCode == Keys::Right && indexButtons_Play < 2)
+						indexButtons_Play++;
+
+					if (e->KeyCode == Keys::Enter && viewChooseVentaja) {
+						ventaja = indexButtons_Play;
+						indexButtons_Play = 1;
+						viewChooseVentaja = false;
+						viewChooseDifficulty = true;
+						return;
+					}
+
+					if (e->KeyCode == Keys::Enter && viewChooseDifficulty) {
+						dificultad = indexButtons_Play;
+						
+						Loop->Enabled = false;
+						FrmMenu::Visible = false;
+
+						FrmBackground^ frmBackground = gcnew FrmBackground();
+						frmBackground->ShowDialog();
+
+						Reiniciar_Menu();
+						Loop->Enabled = true;
+						FrmMenu::Visible = true;
+					}
+				}
+				
+				if (e->KeyCode == Keys::Escape &&
 					(viewScreenPlayGame || viewScreenInstructions || viewScreenCredits))
 					Reiniciar_Menu();
 
 				bfMenu->Render(gMenu);
 			}
 			#pragma endregion
-	private: System::Void PnlMenu_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-	}
-};
+	};
 }
