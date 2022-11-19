@@ -33,7 +33,7 @@ namespace stcharcade {
 				bfMenu = bfSpace->Allocate(gMenu, PnlMenu->ClientRectangle);
 
 				/* Inicializamos los mapas de bits con las rutas de la imagen */
-				bmpMenu = gcnew Bitmap("resources/images/fondo.jpg");
+				bmpMenu = gcnew Bitmap("resources/images/fondo3.png");
 				bmpTitulo = gcnew Bitmap("resources/images/titulo.png");
 				bmpCopyright = gcnew Bitmap("resources/images/copyright.png");
 
