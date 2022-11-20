@@ -17,8 +17,7 @@ enum SpriteAliado {
 	aMorir
 };
 
-class Aliado : public Entidad
-{
+class Aliado : public Entidad {
 	private:
 		int vidas;
 		int puntos;
@@ -42,6 +41,7 @@ class Aliado : public Entidad
 			if (ID == 1) dx = dy = 2;
 			else 		 dx = dy = 0;
 			medicamentos = 0;
+			vidas = 3;
 
 			visible = false;
 		}
@@ -71,6 +71,18 @@ class Aliado : public Entidad
 		int GetMedicamentos() { return medicamentos; }
 		void AgregarMedicamentos(int value) { medicamentos += value; }
 		void UsarMedicamento(int value) { medicamentos -= value; }
+
+		void Animacion_Vidas_Agua(Graphics^ g) {
+			Bitmap^ bmpBarraAgua = gcnew Bitmap("resources/images/barra" + cubetas + ".png");
+			Bitmap^ bmpVidas = gcnew Bitmap("resources/images/corazon" + vidas + ".png");
+
+			g->DrawImage(bmpBarraAgua, x, y + 58, 70, 25);
+			g->DrawImage(bmpVidas, x - 2, y + 58, 25, 25);
+
+			delete bmpBarraAgua;
+			delete bmpVidas;
+		}
+
 		void Mover(Graphics^ g, Poblador* poblador) {
 			if (!visible) return;
 
@@ -130,6 +142,8 @@ class Aliado : public Entidad
 
 		void Mostrar(Graphics^ g, Bitmap^ img) {
 			if (!visible) return;
+
+			Animacion_Vidas_Agua(g);
 
 			Rectangle corte = Rectangle(IDx * ancho, accion * alto, ancho, alto);
 			g->DrawImage(img, Area(), corte, GraphicsUnit::Pixel);

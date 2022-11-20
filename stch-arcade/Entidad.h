@@ -32,7 +32,7 @@ class Entidad
 		int GetAlto() { return alto; }
 		int GetIDx() { return IDx; }
 
-		Rectangle Area() { 
+		Rectangle Area() {
 			return Rectangle(x, y, ancho, alto);
 		}
 

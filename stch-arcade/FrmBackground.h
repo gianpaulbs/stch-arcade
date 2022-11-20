@@ -40,7 +40,9 @@ namespace stcharcade {
 				//bmpMap = gcnew Bitmap("resources/images/background.png");
 
 				/* Cargamos el controlador del juego */
-				controlador = gcnew ControladorJuego();
+				controlador = gcnew ControladorJuego(ventaja, dificultad);
+
+				time = 4 * 1000 + clock();
 			}
 
 		protected:
@@ -69,6 +71,13 @@ namespace stcharcade {
 			Bitmap^ bmpInfo;
 
 			ControladorJuego^ controlador;
+			int time;
+
+			void Animacion_Countdown(int t) {
+				Bitmap^ bmpCountdown = gcnew Bitmap("resources/images/" + t + "cd.png");
+				bfGame->Graphics->DrawImage(bmpCountdown, 440, 150, 380, 180);
+				delete bmpCountdown;
+			}
 
 		private:
 			/// <summary>
@@ -134,7 +143,14 @@ namespace stcharcade {
 				bfGame->Graphics->Clear(Color::White);
 				//bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
 
+
 				controlador->Mostrar(bfGame->Graphics, bfInfo->Graphics);
+
+				/*int countdownStart = (time - clock()) / 1000;
+				if (countdownStart <= 3 && countdownStart > 0) {
+					Animacion_Countdown(countdownStart);
+				}*/
+
 				bfInfo->Render(gInfo);
 				bfGame->Render(gGame);
 

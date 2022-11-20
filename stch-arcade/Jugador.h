@@ -31,10 +31,9 @@ class Jugador : public Entidad
 		bool inspirado;
 		SpriteJugador accion;
 		File* file;
-	public:
 
-		Jugador(Bitmap^ img)
-		{
+	public:
+		Jugador(Bitmap^ img) {
 			file = new File();
 			file->readData();
 			x=file->getX();
@@ -57,12 +56,24 @@ class Jugador : public Entidad
 			vidas += value;
 		}
 
-		void SetInspirado(bool value) { inspirado = value; }
-		int GetCubetas() { return cubetas; }
-		void SetCubetas(int value) { cubetas -= value; }
-		void RecuperarCubeta(int value) { cubetas += value; }
+		void SetInspirado(bool value) { 
+			inspirado = value; 
+		}
+		
+		void SetCubetas(int value) { 
+			cubetas -= value; 
+		}
+		
+		int GetCubetas() {
+			return cubetas;
+		}
+		
+		void RecuperarCubeta(int value) { 
+			cubetas += value; 
+		}
+		
 		void RecargarCubeta() {
-			if (GetX() <= 60 && GetY() <= 60 && cubetas < 3)cubetas++;
+			if (GetX() <= 120 && GetY() <= 60 && cubetas < 3) cubetas++;
 		}
 
 		int GetVidas() {
@@ -97,9 +108,24 @@ class Jugador : public Entidad
 			puntos = value;
 		}
 
-		int GetPuntosInspiracion() { return puntosInspiracion; }
-		void SetPuntosInspiracion(int value) { puntosInspiracion = value; }
+		void SetPuntosInspiracion(int value) { 
+			puntosInspiracion = value;
+		}
 
+		int GetPuntosInspiracion() { 
+			return puntosInspiracion; 
+		}
+
+		void Animacion_Vidas_Agua(Graphics^ g) {
+			Bitmap^ bmpBarraAgua = gcnew Bitmap("resources/images/barra" + cubetas + ".png");
+			Bitmap^ bmpVidas = gcnew Bitmap("resources/images/corazon" + vidas + ".png");
+
+			g->DrawImage(bmpBarraAgua, x, y + 58, 70, 25);
+			g->DrawImage(bmpVidas, x - 2, y + 58, 25, 25);
+
+			delete bmpBarraAgua;
+			delete bmpVidas;
+		}
 
 		void Mover(Graphics^ g) {
 			if (puntosInspiracion >= 10)dx = dy *= 7;
@@ -109,15 +135,16 @@ class Jugador : public Entidad
 				y += dy;
 		}
 
-		void Mostrar(Graphics^ g, Bitmap^ img, Bitmap^ barraAgua, Bitmap^ vidaJugador) {
-			g->DrawString("Vidas: " + vidas, gcnew Font("Arial", 12), Brushes::Black, 0, 0);
-			g->DrawString("Puntos: " + puntos, gcnew Font("Arial", 12), Brushes::Black, 0, 40);
-			g->DrawString("Cubetas: " + cubetas, gcnew Font("Arial", 12), Brushes::Black, 0, 60);
+
+		void Mostrar(Graphics^ g, Bitmap^ img) {
+			//g->DrawString("Vidas: " + vidas, gcnew Font("Arial", 12), Brushes::Black, 150, 0);
+			//g->DrawString("Puntos: " + puntos, gcnew Font("Arial", 12), Brushes::Black, 0, 40);
+			//g->DrawString("Cubetas: " + cubetas, gcnew Font("Arial", 12), Brushes::Black, 0, 80);
+
+			Animacion_Vidas_Agua(g);
 
 			Rectangle corte = Rectangle(IDx * ancho, accion * alto, ancho, alto);
 			g->DrawImage(img, Area(), corte, GraphicsUnit::Pixel);
-			g->DrawImage(barraAgua, x, y + 58, 70, 25);
-			g->DrawImage(vidaJugador, x - 2, y + 58, 25, 25);
 			/*g->DrawRectangle(Pens::Black, Area());
 			g->DrawRectangle(Pens::Blue, HitBox());*/
 
