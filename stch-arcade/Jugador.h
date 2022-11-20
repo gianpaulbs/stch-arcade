@@ -53,8 +53,6 @@ class Jugador : public Entidad
 			inspirado = false;
 		}
 
-		
-
 		void SetVidas(int value) {
 			vidas += value;
 		}
@@ -111,15 +109,17 @@ class Jugador : public Entidad
 				y += dy;
 		}
 
-		void Mostrar(Graphics^ g, Bitmap^ img) {
+		void Mostrar(Graphics^ g, Bitmap^ img, Bitmap^ barraAgua, Bitmap^ vidaJugador) {
 			g->DrawString("Vidas: " + vidas, gcnew Font("Arial", 12), Brushes::Black, 0, 0);
 			g->DrawString("Puntos: " + puntos, gcnew Font("Arial", 12), Brushes::Black, 0, 40);
 			g->DrawString("Cubetas: " + cubetas, gcnew Font("Arial", 12), Brushes::Black, 0, 60);
 
 			Rectangle corte = Rectangle(IDx * ancho, accion * alto, ancho, alto);
 			g->DrawImage(img, Area(), corte, GraphicsUnit::Pixel);
-			g->DrawRectangle(Pens::Black, Area());
-			g->DrawRectangle(Pens::Blue, HitBox());
+			g->DrawImage(barraAgua, x, y + 58, 70, 25);
+			g->DrawImage(vidaJugador, x - 2, y + 58, 25, 25);
+			/*g->DrawRectangle(Pens::Black, Area());
+			g->DrawRectangle(Pens::Blue, HitBox());*/
 
 			if (accion >= CaminarAbajo && accion <= CaminarArriba && (dx != 0 || dy != 0))
 				IDx = (IDx + 1) % 4;
