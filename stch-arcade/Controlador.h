@@ -38,7 +38,9 @@ private:
 	Bitmap^ imgMedicina;
 
 	int pobladorAsaciar;
-	int cooldownCobardia, cooldownCobardiaManual, cooldownCobardiaAutomatica;
+	int cooldownCobardiaFacil, cooldownCobardiaManualFacil, cooldownCobardiaAutomaticaFacil;
+	int cooldownCobardiaDificil, cooldownCobardiaManualDificil, cooldownCobardiaAutomaticaDificil;
+	int dificultad;//dificultad 0 facil dificultad 1 dificil
 	int cooldownAtaqueEnemigo;
 	int tiempo;
 	bool resultado;
@@ -62,11 +64,13 @@ private:
 	int random0;
 	int random1;
 	int random2;
+	bool dificultad;
 
 	int cooldownRoboManual;
 
 public:
-	ControladorJuego() {
+	ControladorJuego(int dificultad) {
+		this->dificultad = dificultad;
 		imgJugador = gcnew Bitmap("resources/images/bruno.png");
 		imgPoblador = gcnew Bitmap("resources/images/sheet2.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
@@ -89,9 +93,12 @@ public:
 		enemigoAliadoManual = new Enemigo(imgEnemigo);
 		medicinas = new Medicinas(imgMedicina, 3, rectangulo1->Area(), rectangulo2->Area(), rectangulo3->Area(), rectangulo4->Area());
 		pobladorAsaciar = 0;
-		cooldownCobardia = 0;
-		cooldownCobardiaManual = 0;
-		cooldownCobardiaAutomatica = 0;
+		cooldownCobardiaFacil = 0;
+		cooldownCobardiaManualFacil = 0;
+		cooldownCobardiaAutomaticaFacil = 0;
+		cooldownCobardiaDificil = 0;
+		cooldownCobardiaManualFacil = 0;
+		cooldownCobardiaAutomaticaDificil = 0;
 		cooldownCubetaEntregadaManual=0;
 		cooldownCubetaEntregadaAutomatica=0;
 		cooldownAtaqueEnemigo = 0;
@@ -285,7 +292,8 @@ public:
 			if (enemigoHeroe->Colision(jugador->HitBox())) {
 				enemigoHeroe->SetAvergonzado(true);
 				enemigoHeroe->SetPicardia(false);
-				cooldownCobardia = clock();
+				if(dificultad==1)cooldownCobardiaFacil = clock();
+				else if (dificultad == 2)cooldownCobardiaDificil = clock();
 				jugador->RecuperarCubeta(1);
 			}
 		}
@@ -298,7 +306,8 @@ public:
 			if (enemigoAliadoManual->Colision(aliadoManual->HitBox())) {
 				enemigoAliadoManual->SetAvergonzado(true);
 				enemigoAliadoManual->SetPicardia(false);
-				cooldownCobardiaManual = clock();
+				if (dificultad == 1)cooldownCobardiaManualFacil = clock();
+				else if (dificultad == 2)cooldownCobardiaManualDificil = clock();
 				aliadoManual->RecuperarCubeta(1);
 
 			}
@@ -307,24 +316,53 @@ public:
 		if (aliadoAutomatico->GetAccion() >= aCaminarArriba && aliadoAutomatico->GetAccion() <= aCaminarIzquierda) {
 			if (enemigoAliadoAutomatico->Colision(aliadoAutomatico->HitBox())) {
 				enemigoAliadoAutomatico->SetAvergonzado(true);
-				cooldownCobardiaAutomatica = clock();
+				if (dificultad == 1)cooldownCobardiaAutomaticaFacil = clock();
+				else if (dificultad == 2)cooldownCobardiaAutomaticaDificil = clock();
 			}
 		}
 
+		if (dificultad == 1) {
+			if (enemigoHeroe->GetAvergonzado() == true && clock() - cooldownCobardiaFacil >= 10000) {
+				enemigoHeroe->SetAvergonzado(false);
+				enemigoHeroe->SetX(600);
+				enemigoHeroe->SetY(300);
+				enemigoHeroe->SetVisible(true);
 
-		if (enemigoHeroe->GetAvergonzado()==true && clock() - cooldownCobardia >= 10000) {
-			enemigoHeroe->SetAvergonzado(false);
-			enemigoHeroe->SetX(600);
-			enemigoHeroe->SetY(300);
-			enemigoHeroe->SetVisible(true);
-
+			}
+			if (enemigoAliadoManual->GetAvergonzado() == true && clock() - cooldownCobardiaManualFacil >= 10000) {
+				enemigoAliadoManual->SetAvergonzado(false);
+				enemigoAliadoManual->SetX(600);
+				enemigoAliadoManual->SetY(300);
+				enemigoAliadoManual->SetVisible(true);
+			}
+			if (enemigoAliadoAutomatico->GetAvergonzado() == true && clock() - cooldownCobardiaAutomaticaFacil >= 10000) {
+				enemigoAliadoAutomatico->SetAvergonzado(false);
+				enemigoAliadoAutomatico->SetX(600);
+				enemigoAliadoAutomatico->SetY(300);
+				enemigoAliadoAutomatico->SetVisible(true);
+			}
 		}
-		if (enemigoAliadoManual->GetAvergonzado() == true && clock() - cooldownCobardiaManual >= 10000) {
-			enemigoAliadoManual->SetAvergonzado(false);
-			enemigoAliadoManual->SetX(600);
-			enemigoAliadoManual->SetY(300);
-			enemigoAliadoManual->SetVisible(true);
+		if (dificultad == 2) {
+			if (enemigoHeroe->GetAvergonzado() == true && clock() - cooldownCobardiaDificil >= 5000) {
+				enemigoHeroe->SetAvergonzado(false);
+				enemigoHeroe->SetX(600);
+				enemigoHeroe->SetY(300);
+				enemigoHeroe->SetVisible(true);
 
+			}
+			if (enemigoAliadoManual->GetAvergonzado() == true && clock() - cooldownCobardiaManualDificil >= 5000) {
+				enemigoAliadoManual->SetAvergonzado(false);
+				enemigoAliadoManual->SetX(600);
+				enemigoAliadoManual->SetY(300);
+				enemigoAliadoManual->SetVisible(true);
+
+			}
+			if (enemigoAliadoAutomatico->GetAvergonzado() == true && clock() - cooldownCobardiaAutomaticaFacil >= 5000) {
+				enemigoAliadoAutomatico->SetAvergonzado(false);
+				enemigoAliadoAutomatico->SetX(600);
+				enemigoAliadoAutomatico->SetY(300);
+				enemigoAliadoAutomatico->SetVisible(true);
+			}
 		}
 		if (clock() >= tiempo) {
 			jugador->SetAccion(Morir);
