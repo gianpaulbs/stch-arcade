@@ -16,10 +16,9 @@ namespace stcharcade {
 	public ref class FrmBackground : public System::Windows::Forms::Form
 	{
 		public:
-			FrmBackground(void)
+			FrmBackground(int ventaja, int dificultad)
 			{
 				InitializeComponent();
-				//srand(time(NULL));
 
 				/* Inicializamos las variables gráficas
 				 * que nos permitirá crear gráficos donde
@@ -28,7 +27,7 @@ namespace stcharcade {
 				gInfo = PnlInfo->CreateGraphics();
 				gGame = PnlGame->CreateGraphics();
 
-				/* Creamos un espacio que nos proporciona métodos para poder
+				/* Creamos un espacio que nos proporciona métodos para poder-
 				 * configurar nuestro bufer gráfico. Con el método allocate creo
 				 * un contenedor bufer de gráficos con las dimensiones de nuestros paneles
 				*/

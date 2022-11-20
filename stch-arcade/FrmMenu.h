@@ -452,7 +452,7 @@ namespace stcharcade {
 						Loop->Enabled = false;
 						FrmMenu::Visible = false;
 
-						FrmBackground^ frmBackground = gcnew FrmBackground();
+						FrmBackground^ frmBackground = gcnew FrmBackground(ventaja, dificultad);
 						frmBackground->ShowDialog();
 
 						Reiniciar_Menu();

@@ -34,6 +34,7 @@ private:
 	Bitmap^ imgEnemigo2;
 	Bitmap^ imgJugador;
 	Bitmap^ imgBarraAgua;
+	Bitmap^ imgVidaJugador;
 	Bitmap^ imgPoblador;
 	Bitmap^ imgAliado;
 	Bitmap^ imgMedicina;
@@ -69,7 +70,9 @@ private:
 public:
 	ControladorJuego() {
 		imgJugador = gcnew Bitmap("resources/images/bruno.png");
-		imgPoblador = gcnew Bitmap("resources/images/rojo.png");
+		imgBarraAgua = gcnew Bitmap("resources/images/barra0.png");
+		imgVidaJugador = gcnew Bitmap("resources/images/corazonLleno.png");
+		imgPoblador = gcnew Bitmap("resources/images/sheet2.png");
 		imgAliado = gcnew Bitmap("resources/images/zombies1.png");
 		imgEnemigo = gcnew Bitmap("resources/images/Enemigos.png");
 		imgEnemigo1 = gcnew Bitmap("resources/images/Enemigos1.png");
@@ -221,42 +224,44 @@ public:
 		rectangulo4->Mostrar(g);
 		medicinas->Mostrar(g, imgMedicina);
 		pobladores->Mostrar(g, imgPoblador);
-		jugador->Mostrar(g, imgJugador, imgBarraAgua);
+		jugador->Mostrar(g, imgJugador, imgBarraAgua, imgVidaJugador);
 		aliadoManual->Mostrar(g, imgAliado);
 		aliadoAutomatico->Mostrar(g, imgAliado);
+
 		switch (random0) {
-		case 0:
-			enemigoHeroe->Mostrar(g, imgEnemigo);
-			break;
-		case 1:
-			enemigoHeroe->Mostrar(g, imgEnemigo1);
-			break;
-		case 2:
-			enemigoHeroe->Mostrar(g, imgEnemigo2);
-			break;
+			case 0:
+				enemigoHeroe->Mostrar(g, imgEnemigo);
+				break;
+			case 1:
+				enemigoHeroe->Mostrar(g, imgEnemigo1);
+				break;
+			case 2:
+				enemigoHeroe->Mostrar(g, imgEnemigo2);
+				break;
 		}
 
 		switch (random1) {
-		case 0:
-			if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo);
-			break;
-		case 1:
-			if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo1);
-			break;
-		case 2:
-			if (aliadoManual->GetVisible())enemigoAliadoManual->Mostrar(g, imgEnemigo2);
-			break;
+			case 0:
+				if (aliadoManual->GetVisible()) enemigoAliadoManual->Mostrar(g, imgEnemigo);
+				break;
+			case 1:
+				if (aliadoManual->GetVisible()) enemigoAliadoManual->Mostrar(g, imgEnemigo1);
+				break;
+			case 2:
+				if (aliadoManual->GetVisible()) enemigoAliadoManual->Mostrar(g, imgEnemigo2);
+				break;
 		}
+
 		switch (random2) {
-		case 0:
-			if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo);
-			break;
-		case 1:
-			if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo1);
-			break;
-		case 2:
-			if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo2);
-			break;
+			case 0:
+				if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo);
+				break;
+			case 1:
+				if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo1);
+				break;
+			case 2:
+				if (aliadoAutomatico->GetVisible())enemigoAliadoAutomatico->Mostrar(g, imgEnemigo2);
+				break;
 		}
 
 		totalMedicamentos = jugador->GetMedicamentos() + aliadoManual->GetMedicamentos() + aliadoAutomatico->GetMedicamentos();
@@ -311,7 +316,6 @@ public:
 				cooldownCobardiaAutomatica = clock();
 			}
 		}
-
 
 		if (enemigoHeroe->GetAvergonzado()==true && clock() - cooldownCobardia >= 10000) {
 			enemigoHeroe->SetAvergonzado(false);
@@ -461,8 +465,6 @@ public:
 			}
 		}
 
-
-		
 		if (jugador->GetCubetas() < 3)jugador->RecargarCubeta();
 		if (aliadoManual->GetCubetas() < 3)aliadoManual->RecargarCubeta();
 
@@ -502,10 +504,9 @@ public:
 			resultado = true;
 			return false;
 		}
+
 		return true;
 	}
-
-	
 
 	void Habilitar_Aliados() {
 		if (!aliadoManual->GetVisible()) aliadoManual->SetVisible(true);
