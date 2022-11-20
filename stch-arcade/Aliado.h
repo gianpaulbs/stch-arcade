@@ -65,7 +65,7 @@ class Aliado : public Entidad {
 		int GetCubetas() { return cubetas; }
 		void SetCubetas(int value) { cubetas -= value; }
 		void RecargarCubeta() {
-			if (GetX() <= 60 && GetY() <= 60 && cubetas < 3)cubetas=3;
+			if (GetX() <= 120 && GetY() <= 60 && cubetas < 3)cubetas=3;
 		}
 
 		int GetMedicamentos() { return medicamentos; }

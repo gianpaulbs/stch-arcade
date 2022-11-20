@@ -146,10 +146,10 @@ namespace stcharcade {
 
 				controlador->Mostrar(bfGame->Graphics, bfInfo->Graphics);
 
-				/*int countdownStart = (time - clock()) / 1000;
+				int countdownStart = (time - clock()) / 1000;
 				if (countdownStart <= 3 && countdownStart > 0) {
 					Animacion_Countdown(countdownStart);
-				}*/
+				}
 
 				bfInfo->Render(gInfo);
 				bfGame->Render(gGame);
