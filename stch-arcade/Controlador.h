@@ -555,12 +555,12 @@ public:
 		}
 
 		if (jugador->GetCubetas() < 3) {
-			if (jugador->GetCubetas() == 2) soundtrack->Play_AddWater();
+			//if (jugador->GetCubetas() == 2) soundtrack->Play_AddWater();
 			jugador->RecargarCubeta();
 		}
 
 		if (aliadoManual->GetCubetas() < 3) {
-			if (jugador->GetCubetas() == 2) soundtrack->Play_AddWater();
+			//if (jugador->GetCubetas() == 2) soundtrack->Play_AddWater();
 			aliadoManual->RecargarCubeta();
 		}
 

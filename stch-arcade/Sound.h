@@ -18,7 +18,21 @@ ref class Soundtrack {
 		WMPLib::WindowsMediaPlayer^ wmpLosing;
 
 	public:
-		~Soundtrack() {}
+		~Soundtrack() {
+			delete wmpTitle;
+			delete wmpButtons;
+			delete wmpEnter;
+			delete wmpBack;
+			delete wmpCountdown;
+			delete wmpRun;
+			delete wmpAddWater;
+			delete wmpAddMedicaments;
+			delete wmpHealing;
+			delete wmpPunch;
+			delete wmpWinning;
+			delete wmpLosing;
+		}
+
 		Soundtrack() {
 			wmpTitle = gcnew WindowsMediaPlayerClass();
 			wmpButtons = gcnew WindowsMediaPlayerClass();

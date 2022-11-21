@@ -205,6 +205,8 @@ namespace stcharcade {
 				soundtrack->Stop_Run();
 				soundtrack->Stop_Winning();
 				soundtrack->Stop_Losing();
+
+				delete soundtrack;
 			}
 			#pragma endregion
 	};
