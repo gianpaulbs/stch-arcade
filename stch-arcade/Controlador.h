@@ -6,6 +6,7 @@
 #include "Enemigo.h"
 #include "Rectangulo.h"
 #include "Medicina.h"
+#include "Sound.h"
 #include <vector>
 
 using namespace std;
@@ -43,6 +44,7 @@ private:
 	Bitmap^ imgAliadoManual;
 
 	Bitmap^ imgMedicina;
+	Soundtrack^ soundtrack;
 
 	int pobladorAsaciar;
 	int cooldownCobardiaFacil, cooldownCobardiaManualFacil, cooldownCobardiaAutomaticaFacil;
@@ -147,6 +149,8 @@ public:
 		if (this->ventaja == 2) {
 			jugador->AgregarMedicamentos(3);
 		}
+
+		soundtrack = gcnew Soundtrack();
 	}
 
 	~ControladorJuego() {
@@ -213,6 +217,7 @@ public:
 
 			}
 			else if (tecla == Keys::Q) {
+				soundtrack->Play_Punch();
 				if (jugador->GetAccion() == CaminarArriba)
 					jugador->AtacarArriba();
 				else if (jugador->GetAccion() == CaminarAbajo)
@@ -430,18 +435,21 @@ public:
 				clock() - cooldownMedicinaRecogida >= 1000) {
 				cooldownMedicinaRecogida = clock();
 				jugador->AgregarMedicamentos(1);
+				soundtrack->Play_AddMedicaments();
 				medicinas->Get(i)->SetVisible(false);
 			}
 			if (aliadoManual->NextHitBox().IntersectsWith(medicinas->Get(i)->HitBox()) &&
 				clock() - cooldownMedicinaRecogidaManual >= 1000) {
 				cooldownMedicinaRecogidaManual = clock();
 				aliadoManual->AgregarMedicamentos(1);
+				soundtrack->Play_AddMedicaments();
 				medicinas->Get(i)->SetVisible(false);
 			}
 			if (aliadoAutomatico->NextHitBox().IntersectsWith(medicinas->Get(i)->HitBox()) &&
 				clock() - cooldownMedicinaRecogidaAutomatica >= 1000) {
 				cooldownMedicinaRecogidaAutomatica = clock();
 				aliadoAutomatico->AgregarMedicamentos(1);
+				soundtrack->Play_AddMedicaments();
 				medicinas->Get(i)->SetVisible(false);
 			}
 		}
@@ -466,6 +474,7 @@ public:
 				if (jugador->GetMedicamentos() >= 1) {
 					pobladores->Get(i)->SetEnfermo(false);
 					jugador->UsarMedicamento(1);
+					soundtrack->Play_Healing();
 					if (jugador->GetCubetas() > 0) {
 						pobladores->Get(i)->SetSaciado(true);
 						cooldownCubetaEntregada = clock();
@@ -496,6 +505,7 @@ public:
 					if (aliadoManual->GetMedicamentos() > 0) {
 						pobladores->Get(i)->SetEnfermo(false);
 						aliadoManual->UsarMedicamento(1);
+						soundtrack->Play_Healing();
 						if (aliadoManual->GetCubetas() > 0) {
 							pobladores->Get(i)->SetSaciado(true);
 							cooldownCubetaEntregadaManual = clock();
@@ -527,6 +537,7 @@ public:
 					if (aliadoAutomatico->GetMedicamentos() > 0) {
 						pobladores->Get(i)->SetEnfermo(false);
 						aliadoAutomatico->UsarMedicamento(1);
+						soundtrack->Play_Healing();
 						if (aliadoAutomatico->GetCubetas() > 0) {
 							pobladores->Get(i)->SetSaciado(true);
 							cooldownCubetaEntregadaAutomatica = clock();
@@ -543,8 +554,15 @@ public:
 			}
 		}
 
-		if (jugador->GetCubetas() < 3) jugador->RecargarCubeta();
-		if (aliadoManual->GetCubetas() < 3) aliadoManual->RecargarCubeta();
+		if (jugador->GetCubetas() < 3) {
+			if (jugador->GetCubetas() == 2) soundtrack->Play_AddWater();
+			jugador->RecargarCubeta();
+		}
+
+		if (aliadoManual->GetCubetas() < 3) {
+			if (jugador->GetCubetas() == 2) soundtrack->Play_AddWater();
+			aliadoManual->RecargarCubeta();
+		}
 
 		if (jugador->GetPuntos() >= 10 && clock() - cooldownInspiracion >= 10000) {
 			jugador->SetInspirado(true);

@@ -1,4 +1,5 @@
 #pragma once
+#include "Sound.h"
 #include "FrmBackground.h"
 
 namespace stcharcade {
@@ -41,6 +42,9 @@ namespace stcharcade {
 				pathSprite_Jugar = "resources/images/jugaron.png";
 				pathSprite_Instrucciones = "resources/images/instruccionesoff.png";
 				pathSprite_Creditos = "resources/images/creditosoff.png";
+
+				/* Inicializamos la clase que guarda los sonidos */
+				soundtrack = gcnew Soundtrack();
 			}
 
 		protected:
@@ -66,6 +70,7 @@ namespace stcharcade {
 			Bitmap^ bmpTitulo;
 			Bitmap^ bmpMenu;
 			Bitmap^ bmpCopyright;
+			Soundtrack^ soundtrack;
 
 			String^ pathSprite_Jugar;
 			String^ pathSprite_Instrucciones;
@@ -117,12 +122,6 @@ namespace stcharcade {
 					posYTitulo -= 40;
 				
 				return playAnimation_Title;
-			}
-
-			void Liberar_Memoria() {
-				//delete bmpTitulo;
-				//delete bmpMenu;
-				delete bmpCopyright;
 			}
 
 			void Animation_Cursor() {
@@ -352,9 +351,8 @@ namespace stcharcade {
 				// 
 				this->PnlMenu->BackColor = System::Drawing::Color::Transparent;
 				this->PnlMenu->Location = System::Drawing::Point(0, 0);
-				this->PnlMenu->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 				this->PnlMenu->Name = L"PnlMenu";
-				this->PnlMenu->Size = System::Drawing::Size(1920, 1049);
+				this->PnlMenu->Size = System::Drawing::Size(1280, 682);
 				this->PnlMenu->TabIndex = 0;
 				// 
 				// Loop
@@ -365,12 +363,14 @@ namespace stcharcade {
 				// 
 				// FrmMenu
 				// 
-				this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+				this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-				this->ClientSize = System::Drawing::Size(1920, 1049);
+				this->ClientSize = System::Drawing::Size(1280, 682);
 				this->Controls->Add(this->PnlMenu);
+				this->Margin = System::Windows::Forms::Padding(2);
 				this->Name = L"FrmMenu";
 				this->Text = L"FrmMenu";
+				this->Load += gcnew System::EventHandler(this, &FrmMenu::FrmMenu_Load);
 				this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmMenu::FrmMenu_KeyDown);
 				this->ResumeLayout(false);
 
@@ -410,11 +410,15 @@ namespace stcharcade {
 
 					if (posXTitulo != 185) return;
 
-					if (e->KeyCode == Keys::Up && indexButtons_Menu > 1)
+					if (e->KeyCode == Keys::Up && indexButtons_Menu > 1) {
 						indexButtons_Menu--;
+						soundtrack->Play_ChooseButton();
+					}
 
-					if (e->KeyCode == Keys::Down && indexButtons_Menu < 3)
+					if (e->KeyCode == Keys::Down && indexButtons_Menu < 3) {
 						indexButtons_Menu++;
+						soundtrack->Play_ChooseButton();
+					}
 
 					switch (indexButtons_Menu) {
 						case 1: Habilitar_BtnJugar(); break;
@@ -424,6 +428,7 @@ namespace stcharcade {
 
 					if (e->KeyCode == Keys::Enter) {
 						Transicion_Pantallas();
+						soundtrack->Play_Enter();
 						return;
 					}
 
@@ -432,22 +437,30 @@ namespace stcharcade {
 				}
 
 				if (viewScreenPlayGame) {
-					if (e->KeyCode == Keys::Left && indexButtons_Play > 1)
+					if (e->KeyCode == Keys::Left && indexButtons_Play > 1) {
 						indexButtons_Play--;
+						soundtrack->Play_ChooseButton();
+					}
 
-					if (e->KeyCode == Keys::Right && indexButtons_Play < 2)
+					if (e->KeyCode == Keys::Right && indexButtons_Play < 2) {
 						indexButtons_Play++;
+						soundtrack->Play_ChooseButton();
+					}
+
 
 					if (e->KeyCode == Keys::Enter && viewChooseVentaja) {
 						ventaja = indexButtons_Play;
 						indexButtons_Play = 1;
 						viewChooseVentaja = false;
 						viewChooseDifficulty = true;
+						soundtrack->Play_Enter();
 						return;
 					}
 
 					if (e->KeyCode == Keys::Enter && viewChooseDifficulty) {
 						dificultad = indexButtons_Play;
+						soundtrack->Play_Enter();
+						soundtrack->Stop_TitleScreen();
 						
 						Loop->Enabled = false;
 						FrmMenu::Visible = false;
@@ -456,17 +469,23 @@ namespace stcharcade {
 						frmBackground->ShowDialog();
 
 						Reiniciar_Menu();
+						soundtrack->Play_TitleScreen();
 						Loop->Enabled = true;
 						FrmMenu::Visible = true;
 					}
 				}
 				
 				if (e->KeyCode == Keys::Escape &&
-					(viewScreenPlayGame || viewScreenInstructions || viewScreenCredits))
+					(viewScreenPlayGame || viewScreenInstructions || viewScreenCredits)) {
 					Reiniciar_Menu();
+					soundtrack->Play_Back();
+				}
 
 				bfMenu->Render(gMenu);
 			}
 			#pragma endregion
+			private: System::Void FrmMenu_Load(System::Object^ sender, System::EventArgs^ e) {
+				soundtrack->Play_TitleScreen();
+			}
 	};
 }

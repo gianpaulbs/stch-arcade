@@ -1,4 +1,5 @@
 #pragma once
+#include "Sound.h"
 #include "Controlador.h"
 
 namespace stcharcade {
@@ -37,12 +38,17 @@ namespace stcharcade {
 
 				/* Inicializamos los mapas de bits con las rutas de la imagen */
 				bmpInfo = gcnew Bitmap("resources/images/tablero.jpg");
+				bmpGanaste = gcnew Bitmap("resources/images/ganaste.png");
+				bmpPerdiste = gcnew Bitmap("resources/images/perdiste.png");
 				//bmpMap = gcnew Bitmap("resources/images/background.png");
 
 				/* Cargamos el controlador del juego */
 				controlador = gcnew ControladorJuego(ventaja, dificultad);
 
 				time = 4 * 1000 + clock();
+
+				/* Inicializamos la clase que guarda los sonidos */
+				soundtrack = gcnew Soundtrack();
 			}
 
 		protected:
@@ -69,6 +75,10 @@ namespace stcharcade {
 			BufferedGraphics^ bfGame;
 
 			Bitmap^ bmpInfo;
+			Bitmap^ bmpGanaste;
+			Bitmap^ bmpPerdiste;
+
+			Soundtrack^ soundtrack;
 
 			ControladorJuego^ controlador;
 			int time;
@@ -128,6 +138,7 @@ namespace stcharcade {
 				this->Name = L"FrmBackground";
 				this->Text = L"Background";
 				this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &FrmBackground::FrmBackground_FormClosing);
+				this->Load += gcnew System::EventHandler(this, &FrmBackground::FrmBackground_Load);
 				this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyDown);
 				this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &FrmBackground::FrmBackground_KeyUp);
 				this->ResumeLayout(false);
@@ -143,7 +154,6 @@ namespace stcharcade {
 				bfGame->Graphics->Clear(Color::White);
 				//bfGame->Graphics->DrawImage(bmpMap, 0, 0, 1281, 595);
 
-
 				controlador->Mostrar(bfGame->Graphics, bfInfo->Graphics);
 
 				int countdownStart = (time - clock()) / 1000;
@@ -156,13 +166,21 @@ namespace stcharcade {
 
 				if (!controlador->Mover(gGame)) {
 					this->Loop->Enabled = false;
+					soundtrack->Stop_Run();
 
-					if (controlador->GetResultado()) 
-						MessageBox::Show("GANASTE");
-					else 
-						MessageBox::Show("PERDISTE");
+					if (controlador->GetResultado()) {
+						bfGame->Graphics->DrawImage(bmpGanaste, 350, 215, 570, 30);
+						soundtrack->Play_Winning();
+						//MessageBox::Show("GANASTE");
+					}
+					else {
+						bfGame->Graphics->DrawImage(bmpPerdiste, 350, 215, 550, 30);
+						soundtrack->Play_Losing();
+						//MessageBox::Show("PERDISTE");
+					}
 
-					this->Close();
+					bfGame->Render(gGame);
+					//this->Close();
 				}
 			}
 
@@ -178,11 +196,17 @@ namespace stcharcade {
 				controlador->MovimientoManual(false, e->KeyCode);
 			}
 
+			private: System::Void FrmBackground_Load(System::Object^ sender, System::EventArgs^ e) {
+				soundtrack->Play_Run();
+			}
+
 			private: System::Void FrmBackground_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 				this->Loop->Enabled = false;
+				soundtrack->Stop_Run();
+				soundtrack->Stop_Winning();
+				soundtrack->Stop_Losing();
 			}
 			#pragma endregion
-
 	};
 
 	/* Si añades eventos al formulario, también estos se añaden a la configuración de los controles uwu */

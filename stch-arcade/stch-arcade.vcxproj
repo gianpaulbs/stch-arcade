@@ -119,6 +119,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WMPLib">
+      <HintPath>WMPLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrmMenu.cpp" />
@@ -141,6 +144,7 @@
     <ClInclude Include="Medicina.h" />
     <ClInclude Include="Poblador.h" />
     <ClInclude Include="Rectangulo.h" />
+    <ClInclude Include="Sound.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FrmBackground.resx">

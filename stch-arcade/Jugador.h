@@ -1,6 +1,5 @@
 #pragma once
 #include <time.h>
-
 #include "Fondo.h"
 #include "Entidad.h"
 #include "File.h"

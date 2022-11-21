@@ -62,5 +62,8 @@
     <ClInclude Include="Fondo.h">
       <Filter>Archivos de encabezado\Clases</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Archivos de encabezado\Clases</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
