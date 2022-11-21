@@ -1,18 +1,13 @@
 #pragma once
 #include "Entidad.h"
+#include "Entidad.h"
 #include "Poblador.h"
 
 enum SpriteAliado {
-	aCaminarArriba,
-	aCaminarDerecha,
 	aCaminarAbajo,
 	aCaminarIzquierda,
-
-	//DefensaPropia
-	aAtacarAbajo,
-	aAtacarIzquierda,
-	aAtacarDerecha,
-	aAtacarArriba,
+	aCaminarDerecha,
+	aCaminarArriba,
 
 	aMorir
 };
@@ -25,21 +20,28 @@ class Aliado : public Entidad {
 		int medicamentos;
 		int ID;
 		bool visible;
+		bool atacar;
 		SpriteAliado accion;
 
 	public:
 		Aliado(Bitmap^ img, int id) {
 			x = 65; y = 65;
 
-			ancho = img->Width / 3;
-			alto = img->Height / 4;
+			ancho = img->Width / 12;
+			alto = img->Height / 8;
 
 			accion = aCaminarAbajo;
 			cubetas = 0;
 			puntos = 0;
 			ID = id;
-			if (ID == 1) dx = dy = 2;
-			else 		 dx = dy = 0;
+			if (ID == 1) {
+				IDx = 7;
+				dx = dy = 2;
+			}
+			else if (ID==2){
+				dx = dy = 0;
+				IDx = 10;
+			}
 			medicamentos = 0;
 			vidas = 3;
 
@@ -51,8 +53,10 @@ class Aliado : public Entidad {
 		void SetPuntos(int value) { puntos += value; }
 		void SetVisible(bool value) { visible = value; }
 		void SetAccion(SpriteAliado value) {
-			if (accion != value)
-				IDx = 0;
+			if (accion != value) {
+				if (ID == 1)IDx = 6;
+				else IDx = 9;
+			}
 			accion = value;
 		}
 		void RecuperarCubeta(int value) { cubetas += value; }
@@ -82,7 +86,29 @@ class Aliado : public Entidad {
 			delete bmpBarraAgua;
 			delete bmpVidas;
 		}
+		void AtacarArriba() {
+			y -= 20;
+			atacar = true;
+		}
+		void RegresoAtaqueArriba() {
+			y += 20;
+		}
+		void SetAtacar(bool value) { atacar = value; }
+		bool GetAtacar() { return atacar; }
+		void AtacarAbajo() {
+			y += 20;
+			atacar = true;
+		}
 
+		void AtacarIzquierda() {
+			x -= 20;
+			atacar = true;
+		}
+
+		void AtacarDerecha() {
+			x += 20;
+			atacar = true;
+		}
 		void Mover(Graphics^ g, Poblador* poblador) {
 			if (!visible) return;
 
@@ -97,6 +123,7 @@ class Aliado : public Entidad {
 					if (x == poblador->GetX())x += 0;
 					else if (x > poblador->GetX()) {
 						accion = aCaminarIzquierda;
+
 						x -= dx;
 					}
 					else if ((x < poblador->GetX()) && (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) {
@@ -150,7 +177,17 @@ class Aliado : public Entidad {
 			//g->DrawRectangle(Pens::Black, Area());
 			//g->DrawRectangle(Pens::Blue, HitBox());
 
-			if (accion >= aCaminarArriba && accion <= aCaminarIzquierda && (dx != 0 || dy != 0))
-				IDx = (IDx + 1) % 3;
+			if (accion >= aCaminarAbajo && accion <= aCaminarArriba) {
+				if (ID == 1) {
+					if (IDx <= 7)
+						IDx++;
+					else IDx = 5;
+				}
+				if (ID == 2 && dy != 0 || dx != 0) {
+					if (IDx <= 10)
+						IDx++;
+					else IDx = 9;
+				}
+			}
 		}
 };

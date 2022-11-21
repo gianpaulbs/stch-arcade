@@ -13,11 +13,6 @@ enum SpritePoblador {
 	ehCaminarDerecha,
 	ehCaminarArriba,
 
-	eqCaminarAbajo,
-	eqCaminarIzquierda,
-	eqCaminarDerecha,
-	eqCaminarArriba,
-
 	eMorir
 };
 
@@ -44,7 +39,7 @@ public:
 		enfermo = false;
 		movimiento = true;
 		saciado = false;
-		x = rand3->Next(1200);
+		x = rand3->Next(1230);
 		y = rand3->Next(126,365);
 		timew = clock();
 		
@@ -62,24 +57,41 @@ public:
 		ancho = img->Width / 12;
 		alto = img->Height / 8;
 
-		switch (rand() % 3) {
+		switch (rand() % 7) {
 		case 0:
 			ID = 0;
-			IDx = 0;
+			IDx = 1;
 			accion = eCaminarAbajo;
-
 			break;
 		case 1:
 			ID = 1;
-			IDx = 0;
-			accion = ehCaminarAbajo;
-
+			IDx = 7;
+			accion = eCaminarAbajo;
 			break;
 		case 2:
 			ID = 2;
-			IDx = 3;
+			IDx = 10;
 			accion = eCaminarAbajo;
-
+			break;
+		case 3:
+			ID = 3;
+			IDx = 1;
+			accion = ehCaminarAbajo;
+			break;
+		case 4:
+			ID = 4;
+			IDx = 4;
+			accion = ehCaminarAbajo;
+			break;
+		case 5:
+			ID = 5;
+			IDx = 7;
+			accion = ehCaminarAbajo;
+			break;
+		case 6:
+			ID = 6;
+			IDx = 10;
+			accion = ehCaminarAbajo;
 			break;
 		}
 	}
@@ -109,7 +121,7 @@ public:
 
 			if (movimiento) {
 
-				if (ID == 0) {
+				if (ID >= 0 && ID <= 2) {
 					if (!(x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) dx *= -1;
 					if (!(y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) dy *= -1;
 					if (dx < 0) accion = eCaminarIzquierda;
@@ -120,23 +132,13 @@ public:
 					y += dy;
 
 				}
-				if (ID == 1) {
+				if (ID >= 3 && ID <= 6) {
 					if (!(x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) dx *= -1;
 					if (!(y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) dy *= -1;
 					if (dx < 0) accion = ehCaminarIzquierda;
 					else if (dx > 0) accion = ehCaminarDerecha;
 					else if (dy < 0) accion = ehCaminarArriba;
 					else if (dy > 0) accion = ehCaminarAbajo;
-					x += dx;
-					y += dy;
-				}
-				if (ID == 2) {
-					if (!(x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)) dx *= -1;
-					if (!(y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)) dy *= -1;
-					if (dx < 0) accion = eCaminarIzquierda;
-					else if (dx > 0) accion = eCaminarDerecha;
-					else if (dy < 0) accion = eCaminarArriba;
-					else if (dy > 0) accion = eCaminarAbajo;
 					x += dx;
 					y += dy;
 				}
@@ -149,32 +151,71 @@ public:
 					dy *= -1;
 				}
 			}
-			if (clock() - cooldown >= (rand()%3400+2000)) {
+			if (clock() - cooldown >= (rand() % 3400 + 2000)) {
 				movimiento = true;
 			}
 
 
 			if (!movimiento) {
-				if (ID == 2)IDx = 4;
-				else IDx = 1;
+				if (ID == 0)IDx = 1;
+				else if (ID == 1)IDx = 7;
+				else if (ID == 2)IDx = 10;
+				else if (ID == 3)IDx = 1;
+				else if (ID == 4)IDx = 4;
+				else if (ID == 5)IDx = 7;
+				else if (ID == 6)IDx = 10;
 			}
-		
-			
 		}
-		else if(enfermo){
+		else if (enfermo) {
 			SetDY(0);
 			SetDX(0);
-			accion = eCaminarAbajo;
-			IDx = 0;
+			if (ID >= 0 && ID <= 2)accion = eCaminarAbajo;
+			else accion = ehCaminarAbajo;
+			if (ID == 0)IDx = 1;
+			else if (ID == 1)IDx = 7;
+			else if (ID == 2)IDx = 10;
+			else if (ID == 3)IDx = 1;
+			else if (ID == 4)IDx = 4;
+			else if (ID == 5)IDx = 7;
+			else if (ID == 6)IDx = 10;
 		}
-		if (saciado && !enfermo) {
-			accion = eCaminarIzquierda;
-			IDx = (IDx + 1) % 3;
+		if (saciado) {
+			if (ID >= 0 && ID <= 2)accion = eCaminarIzquierda;
+			else accion = ehCaminarIzquierda;
 			SetDX(5);
+			if (ID == 0) {
+				IDx = (IDx + 1) % 3;
+			}
+			if (ID == 1) {
+				if (IDx <= 7)IDx++;
+				else IDx = 6;
+			}
+			if (ID == 2) {
+				if (IDx <= 10)IDx++;
+				else IDx = 9;
+			}
+			if (ID == 3) {
+				IDx = (IDx + 1) % 3;
+			}
+			if (ID == 4) {
+				if (IDx <= 4)IDx++;
+				else IDx = 3;
+			}
+			if (ID == 5) {
+				if (IDx <= 7)
+					IDx++;
+				else IDx = 6;
+			}
+			if (ID == 6) {
+				if (IDx <= 10)
+					IDx++;
+				else IDx = 9;
+			}
 			x -= dx;
 			if (x <= 0)SetVisible(false);
 		}
 	}
+	
 
 	void Mostrar(Graphics^ g, Bitmap^ img) {
 		Rectangle corte = Rectangle(IDx * ancho, accion * alto, ancho, alto);
@@ -182,18 +223,55 @@ public:
 		//g->DrawRectangle(Pens::Black, Area());
 		//g->DrawRectangle(Pens::Blue, HitBox());
 
-		if (ID==1||ID==0&&accion >= eCaminarAbajo && accion <= ehCaminarArriba) {
-			IDx = (IDx + 1) % 3;
+		if (ID>=0&&ID<=2&&accion >= eCaminarAbajo && accion <= eCaminarArriba) {
+			if (ID == 0) {
+				IDx = (IDx + 1) % 3;
+			}
+			if (ID == 1) {
+				if (IDx <= 7)IDx++;
+				else IDx = 6;
+			}
+			if (ID == 2) {
+				if (IDx <= 10)IDx++;
+				else IDx = 9;
+			}
 		}
-		if (ID ==2 && accion >= eCaminarAbajo && accion <= eCaminarArriba) {
-			if (IDx < 6)
-				IDx++;
-			if (IDx >= 6)IDx = 3;
-			
-			
+
+		if (ID >=3 && ID<=6 && accion >= ehCaminarAbajo && accion <= ehCaminarArriba) {
+			if (ID == 3) {
+				IDx = (IDx + 1) % 3;
+			}
+			if (ID == 4) {
+				if (IDx <= 4)IDx++;
+				else IDx = 3;
+			}
+			if (ID == 5) {
+				if (IDx <= 7)
+					IDx++;
+				else IDx = 6;
+			}
+			if (ID == 6) {
+				if (IDx <= 10)
+					IDx++;
+				else IDx = 9;
+			}
 		}
-		if (GetEnfermo() == true&& GetSaciado()==false)IDx = 0;
-		if(saciado) IDx = (IDx + 1) % 3;
+		if (GetEnfermo() == true && GetSaciado() == false) {
+			if (ID == 0)IDx = 1;
+			else if (ID == 1)IDx = 7;
+			else if (ID == 2)IDx = 10;
+			else if (ID == 3)IDx = 1;
+			else if (ID == 4)IDx = 4;
+			else if (ID == 5)IDx = 7;
+			else if (ID == 6)IDx = 10;
+		}
+		if (saciado) {
+			if (ID >= 0 && ID <= 2)accion = eCaminarIzquierda;
+			else accion = ehCaminarIzquierda;
+			SetDX(5);
+			x -= dx;
+			if (x <= 0)SetVisible(false);
+		}
 	}
 };
 

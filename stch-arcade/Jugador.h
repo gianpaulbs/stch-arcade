@@ -1,4 +1,5 @@
 #pragma once
+#include <time.h>
 
 #include "Fondo.h"
 #include "Entidad.h"
@@ -10,27 +11,21 @@ enum SpriteJugador
 	CaminarIzquierda,
 	CaminarDerecha,
 	CaminarArriba,
-
-	//DefensaPropia
-	AtacarAbajo,
-	AtacarIzquierda,
-	AtacarDerecha,
-	AtacarArriba,
-
 	Morir
 };
 
 class Jugador : public Entidad
 {
-	private:
-		int vidas;
-		int puntos;
-		int cubetas;
-		int medicamentos;
-		int puntosInspiracion;
-		bool inspirado;
-		SpriteJugador accion;
-		File* file;
+private:
+	int vidas;
+	int puntos;
+	int cubetas;
+	bool atacar;
+	int medicamentos;
+	int puntosInspiracion;
+	bool inspirado;
+	SpriteJugador accion;
+	File* file;
 
 	public:
 		Jugador(Bitmap^ img) {
@@ -40,11 +35,11 @@ class Jugador : public Entidad
 			y = file->getY();
 			dx = dy = 0;
 			cubetas = 0;
-			ancho = img->Width / 4;
-			alto = img->Height / 4;
-
+			ancho = img->Width / 12;
+			alto = img->Height / 8;
+			IDx = 4;
+			atacar = false;
 			accion = CaminarAbajo;
-
 			puntos = 0;
 			vidas = 3;
 			puntosInspiracion = 0;
@@ -86,10 +81,32 @@ class Jugador : public Entidad
 
 		void SetAccion(SpriteJugador value) {
 			if (accion != value)
-				IDx = 0;
+				IDx = 3;
 			accion = value;
 		}
+		void AtacarArriba() {
+			y -= 20;
+			atacar = true;
+		}
+		void RegresoAtaqueArriba() {
+			y += 20;
+		}
+		void SetAtacar(bool value) { atacar = value; }
+		bool GetAtacar() { return atacar; }
+		void AtacarAbajo() {
+			y += 20;
+			atacar = true;
+		}
 
+		void AtacarIzquierda() {
+			x -= 20;	
+			atacar = true;
+		}
+
+		void AtacarDerecha() {
+			x += 20;
+			atacar = true;
+		}
 		SpriteJugador GetAccion() {
 			return accion;
 		}
@@ -102,6 +119,7 @@ class Jugador : public Entidad
 
 		void SetPuntos(int value) {
 			puntos += value;
+	
 		}
 
 		void ResetPuntos(int value) {
@@ -149,7 +167,9 @@ class Jugador : public Entidad
 			g->DrawRectangle(Pens::Blue, HitBox());*/
 
 			if (accion >= CaminarAbajo && accion <= CaminarArriba && (dx != 0 || dy != 0))
-				IDx = (IDx + 1) % 4;
+				if (IDx < 5)
+					IDx++;
+				else IDx = 3;
 			else if (accion == Morir)
 				IDx = (IDx + 1) % 6;
 		}

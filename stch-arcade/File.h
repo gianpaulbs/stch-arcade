@@ -20,8 +20,8 @@ public:
 		if (fileRead.fail()) {
 			fileRead.close();
 			fileWrite.open("resources/files/coordenadas.txt", ios::out);
-			fileWrite << "100" << endl;
-			fileWrite << "300" << endl;
+			fileWrite << "65" << endl;
+			fileWrite << "65" << endl;
 			fileWrite.close();
 			fileRead.open("configuration.txt", ios::in);
 		}
