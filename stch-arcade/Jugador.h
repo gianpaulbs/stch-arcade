@@ -145,7 +145,7 @@ private:
 		}
 
 		void Mover(Graphics^ g) {
-			if (puntosInspiracion >= 10)dx = dy *= 7;
+			/*if (puntos >= 10) dx = dy *= 7;*/
 			if (x + dx >= 0 && x + ancho + dx < g->VisibleClipBounds.Width)
 				x += dx;
 			if (y + dy >= 0 && y + alto + dy < g->VisibleClipBounds.Height)

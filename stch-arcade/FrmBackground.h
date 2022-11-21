@@ -169,18 +169,18 @@ namespace stcharcade {
 					soundtrack->Stop_Run();
 
 					if (controlador->GetResultado()) {
-						bfGame->Graphics->DrawImage(bmpGanaste, 350, 215, 570, 30);
+						//bfGame->Graphics->DrawImage(bmpGanaste, 350, 215, 570, 30);
 						soundtrack->Play_Winning();
-						//MessageBox::Show("GANASTE");
+						MessageBox::Show("GANASTE");
 					}
 					else {
 						bfGame->Graphics->DrawImage(bmpPerdiste, 350, 215, 550, 30);
 						soundtrack->Play_Losing();
-						//MessageBox::Show("PERDISTE");
+						MessageBox::Show("PERDISTE");
 					}
 
-					bfGame->Render(gGame);
-					//this->Close();
+					//bfGame->Render(gGame);
+					this->Close();
 				}
 			}
 

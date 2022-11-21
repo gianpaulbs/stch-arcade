@@ -120,7 +120,7 @@ public:
 		cooldownCubetaEntregadaManual = 0;
 		cooldownCubetaEntregadaAutomatica = 0;
 		cooldownAtaqueEnemigo = 0;
-		objetivo = 20;
+		objetivo = 12;
 		tiempo = 90 * 1000 + clock();
 		info = gcnew Info();
 		pobladoresSaciados = 0;
@@ -164,7 +164,7 @@ public:
 	void MovimientoManual(bool accion, Keys tecla) {
 		int v = 3;
 		int vel = 3;
-		if (jugador->GetInspirado()) v = 5;
+		if (jugador->GetInspirado()) v = 10;
 		else v = 3;
 		if (accion) {
 			if (tecla == Keys::I) {
@@ -567,7 +567,7 @@ public:
 		if (jugador->GetPuntos() >= 10 && clock() - cooldownInspiracion >= 10000) {
 			jugador->SetInspirado(true);
 			cooldownInspiracion = clock();
-			jugador->ResetPuntos(0);
+			//jugador->ResetPuntos(0);
 			if (clock() - cooldownInspiracion >= 10000)jugador->SetInspirado(false);
 		}
 
