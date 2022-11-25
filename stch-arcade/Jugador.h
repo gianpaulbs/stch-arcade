@@ -121,10 +121,6 @@ private:
 	
 		}
 
-		void ResetPuntos(int value) {
-			puntos = value;
-		}
-
 		void SetPuntosInspiracion(int value) { 
 			puntosInspiracion = value;
 		}
